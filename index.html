@@ -52,7 +52,6 @@
     letter-spacing: 0.02em;
   }
 
-  /* Nav Buton Grubu */
   .nav-actions {
     display: flex;
     align-items: center;
@@ -369,7 +368,6 @@
 
   .btn-submit:hover { opacity: 0.85; }
 
-  /* Modal Alt Alanı (Yönlendirmeler İçin) */
   .modal-footer {
     margin-top: 1.5rem;
     text-align: center;
@@ -563,7 +561,7 @@
     
     <div class="form-group">
       <label>Referans Kodu</label>
-      <input type="text" placeholder="REF-XXXX" style="border-color: rgba(200,169,110,0.3);">
+      <input type="text" placeholder="REF-XXXX">
     </div>
     <p class="form-note">* Kayıt olabilmek için geçerli bir davet kodu girmelisiniz.</p>
     
@@ -576,7 +574,7 @@
 </div>
 
 <script>
-  // Giriş Modalı Fonksiyonları
+  // Modalları Açma / Kapatma Mantığı
   function openModal() {
     document.getElementById('modalOverlay').classList.add('open');
   }
@@ -587,7 +585,6 @@
     if (e.target === document.getElementById('modalOverlay')) closeModal();
   }
 
-  // Kayıt Modalı Fonksiyonları
   function openRegisterModal() {
     document.getElementById('registerModalOverlay').classList.add('open');
   }
@@ -598,7 +595,6 @@
     if (e.target === document.getElementById('registerModalOverlay')) closeRegisterModal();
   }
 
-  // Modallar Arası Geçiş Tetikleyicileri
   function switchToRegister(e) {
     e.preventDefault();
     closeModal();
@@ -611,7 +607,6 @@
     setTimeout(openModal, 200);
   }
 
-  // Esc Tuşu Dinleyicisi
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeModal();
