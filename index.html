@@ -522,3 +522,103 @@
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title">Giriş</h2>
+    <p class="modal-sub">Servis paneline erişim</p>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" placeholder="kullanıcı adı" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Parola</label>
+      <input type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-submit">Giriş Yap →</button>
+    
+    <div class="modal-footer">
+      Hesabın yok mu? <a href="#" onclick="switchToRegister(event)">Kaydol</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="registerModalOverlay" onclick="handleRegisterOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeRegisterModal()">✕</button>
+    <h2 class="modal-title">Kaydol</h2>
+    <p class="modal-sub">Yeni hesap oluşturma</p>
+    
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" placeholder="kullanıcı adı" autocomplete="username">
+    </div>
+    
+    <div class="form-group">
+      <label>E-Posta</label>
+      <input type="email" placeholder="ornek@alanadi.com" autocomplete="email">
+    </div>
+    
+    <div class="form-group">
+      <label>Parola</label>
+      <input type="password" placeholder="••••••••" autocomplete="new-password">
+    </div>
+    
+    <div class="form-group">
+      <label>Referans Kodu</label>
+      <input type="text" placeholder="REF-XXXX" style="border-color: rgba(200,169,110,0.3);">
+    </div>
+    <p class="form-note">* Kayıt olabilmek için geçerli bir davet kodu girmelisiniz.</p>
+    
+    <button class="btn-submit">Hesap Oluştur →</button>
+    
+    <div class="modal-footer">
+      Zaten hesabın var mı? <a href="#" onclick="switchToLogin(event)">Giriş Yap</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Giriş Modalı Fonksiyonları
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  // Kayıt Modalı Fonksiyonları
+  function openRegisterModal() {
+    document.getElementById('registerModalOverlay').classList.add('open');
+  }
+  function closeRegisterModal() {
+    document.getElementById('registerModalOverlay').classList.remove('open');
+  }
+  function handleRegisterOverlayClick(e) {
+    if (e.target === document.getElementById('registerModalOverlay')) closeRegisterModal();
+  }
+
+  // Modallar Arası Geçiş Tetikleyicileri
+  function switchToRegister(e) {
+    e.preventDefault();
+    closeModal();
+    setTimeout(openRegisterModal, 200);
+  }
+
+  function switchToLogin(e) {
+    e.preventDefault();
+    closeRegisterModal();
+    setTimeout(openModal, 200);
+  }
+
+  // Esc Tuşu Dinleyicisi
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeModal();
+      closeRegisterModal();
+    }
+  });
+</script>
+
+</body>
+</html>
