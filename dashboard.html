@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kullanıcı Paneli — fatihdurdu.xyz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e8e6e1;
+    --muted: #555;
+    --accent: #c8a96e;
+    --accent-dim: rgba(200,169,110,0.08);
+    --success: #5f9e7b;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PANEL NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-user {
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .nav-user strong {
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .btn-logout {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    padding: 0.4rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-logout:hover {
+    border-color: #9e3f3f;
+    color: #9e3f3f;
+    background: rgba(158, 63, 63, 0.05);
+  }
+
+  /* MAIN CONTAINER */
+  .container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 8rem 3rem 4rem;
+    flex: 1;
+  }
+
+  .welcome-section {
+    margin-bottom: 3rem;
+  }
+
+  .welcome-section h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .welcome-section p {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* STATS ROW */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  .stat-value.active {
+    color: var(--success);
+  }
+
+  /* SERVICES GRID */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  .panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .panel-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  }
+
+  .panel-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    transform: translateY(-2px);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    filter: brightness(0.9);
+  }
+
+  .card-status {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .panel-card:hover .card-status {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .card-meta {
+    margin-top: 2rem;
+  }
+
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .card-desc {
+    font-size: 0.75rem;
+    color: #888;
+    line-height: 1.5;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: auto;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .container { padding: 7rem 1.5rem 3rem; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .panel-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-user">oturum: <strong>ziyaretci_01</strong></div>
+  <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+</nav>
+
+<main class="container">
+  
+  <section class="welcome-section">
+    <h1>Erişim Paneli</h1>
+    <p>Hesabınıza tanımlı aktif dijital servisler listelenmektedir.</p>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Hesap Durumu</div>
+      <div class="stat-value active">● Aktif Üye</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Nextcloud Kotası</div>
+      <div class="stat-value">5.00 GB</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Sunucu Lokasyonu</div>
+      <div class="stat-value">Oracle ARM Node</div>
+    </div>
+  </section>
+
+  <section class="services-section">
+    <h2 class="section-title">Kullanılabilir Servisler</h2>
+    
+    <div class="panel-grid">
+      
+      <a href="https://nextcloud.fatihdurdu.xyz" target="_blank" class="panel-card">
+        <div class="card-top">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png" class="card-icon" alt="Nextcloud">
+          <div class="card-status">Bağlan</div>
+        </div>
+        <div class="card-meta">
+          <h3 class="card-title">Nextcloud</h3>
+          <p class="card-desc">Kişisel dosya depolama, senkronizasyon ve bulut alanı.</p>
+        </div>
+      </a>
+
+      <a href="https://vaultwarden.fatihdurdu.xyz" target="_blank" class="panel-card">
+        <div class="card-top">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/vaultwarden.png" class="card-icon" alt="Vaultwarden">
+          <div class="card-status">Bağlan</div>
+        </div>
+        <div class="card-meta">
+          <h3 class="card-title">Vaultwarden</h3>
+          <p class="card-desc">Güvenli şifre yöneticisi şifrelenmiş parola kasası.</p>
+        </div>
+      </a>
+
+      <a href="https://pdf.fatihdurdu.xyz" target="_blank" class="panel-card">
+        <div class="card-top">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/stirling-pdf.png" class="card-icon" alt="Stirling PDF">
+          <div class="card-status">Bağlan</div>
+        </div>
+        <div class="card-meta">
+          <h3 class="card-title">Stirling PDF</h3>
+          <p class="card-desc">Gelişmiş yerel PDF dönüştürme ve düzenleme araçları.</p>
+        </div>
+      </a>
+
+      <a href="#" class="panel-card" onclick="alert('Minecraft Sunucu Adresi: mc.fatihdurdu.xyz'); return false;">
+        <div class="card-top">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png" class="card-icon" alt="Minecraft">
+          <div class="card-status">Bilgi</div>
+        </div>
+        <div class="card-meta">
+          <h3 class="card-title">Minecraft Server</h3>
+          <p class="card-desc">Özel hayatta kalma sunucusu. Bağlantı adresi: mc.fatihdurdu.xyz</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Fatih Durdu · fatihdurdu.xyz
+</footer>
+
+<script>
+  function logout() {
+    alert("Oturum kapatılıyor...");
+    window.location.href = "/";
+  }
+</script>
+
+</body>
+</html>
