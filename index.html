@@ -66,6 +66,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
+    cursor: pointer;
     transition: color 0.2s;
   }
 
@@ -368,7 +369,7 @@
 
   .btn-submit:hover { opacity: 0.85; }
 
-  /* Modal Alt Alanı (Kaydol Linki İçin) */
+  /* Modal Alt Alanı (Yönlendirmeler İçin) */
   .modal-footer {
     margin-top: 1.5rem;
     text-align: center;
@@ -386,6 +387,16 @@
 
   .modal-footer a:hover {
     text-decoration: underline;
+  }
+
+  .form-note {
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: -0.8rem;
+    margin-bottom: 1rem;
+    padding-left: 0.2rem;
+    line-height: 1.4;
   }
 
   .modal-close {
@@ -428,9 +439,8 @@
 
 <nav>
   <a href="/" class="nav-logo">Fatih Durdu</a>
-  <!-- Sağ üst aksiyon grubu -->
   <div class="nav-actions">
-    <a href="/register" class="nav-register-link">Kaydol</a>
+    <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
     <button class="nav-login" onclick="openModal()">
       <span>Giriş Yap</span>
       <span>→</span>
@@ -477,7 +487,7 @@
     </div>
 
     <p class="bio">
-      Üye olan bitcheslara özel servislerden yaralanın ve Fatih Durduya yüce bir insan olduğu için minnet duyun.
+      Buraya kendini tanıtan bir metin yazabilirsin. Kısa, sade, seni anlatan bir şeyler.
     </p>
   </section>
 
@@ -509,43 +519,6 @@
   © 2026 Fatih Durdu · fatihdurdu.xyz
 </footer>
 
-<!-- LOGIN MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <h2 class="modal-title">Giriş</h2>
-    <p class="modal-sub">Servis paneline erişim</p>
-    <div class="form-group">
-      <label>Kullanıcı Adı</label>
-      <input type="text" placeholder="kullanıcı adı" autocomplete="username">
-    </div>
-    <div class="form-group">
-      <label>Parola</label>
-      <input type="password" placeholder="••••••••" autocomplete="current-password">
-    </div>
-    <button class="btn-submit">Giriş Yap →</button>
-    
-    <!-- Yeni eklenen alt kısım -->
-    <div class="modal-footer">
-      Hesabın yok mu? <a href="/register">Kaydol</a>
-    </div>
-  </div>
-</div>
-
-<script>
-  function openModal() {
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-  function handleOverlayClick(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  }
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeModal();
-  });
-</script>
-
-</body>
-</html>
