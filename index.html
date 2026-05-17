@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatih Durdu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e8e6e1;
+    --muted: #555;
+    --accent: #c8a96e;
+    --accent-dim: rgba(200,169,110,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 3rem;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-login {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .nav-login:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* HERO */
+  .hero {
+    padding: 10rem 3rem 5rem;
+    max-width: 820px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.25s;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* SERVICES */
+  .services {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .service-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .service-item:hover { color: var(--accent); }
+
+  .service-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    padding: 8px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .service-item:hover .service-icon {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .service-icon img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: brightness(0.7) grayscale(0.3);
+    transition: filter 0.2s;
+  }
+
+  .service-item:hover .service-icon img {
+    filter: brightness(1) grayscale(0);
+  }
+
+  /* BIO */
+  .bio {
+    max-width: 520px;
+    margin: 0 auto 5rem;
+    font-size: 0.85rem;
+    line-height: 1.9;
+    color: #888;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.55s;
+  }
+
+  /* DIVIDER */
+  .divider {
+    max-width: 820px;
+    margin: 0 auto;
+    border: none;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.65s;
+  }
+
+  /* UPDATES */
+  .updates {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 3rem 6rem;
+  }
+
+  .updates-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 2.5rem 0 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.75s;
+  }
+
+  .updates-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+
+  .updates-count {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .update-list {
+    list-style: none;
+  }
+
+  .update-item {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--border);
+    cursor: default;
+    transition: background 0.15s;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .update-item:nth-child(1) { animation-delay: 0.85s; }
+  .update-item:nth-child(2) { animation-delay: 0.95s; }
+  .update-item:nth-child(3) { animation-delay: 1.05s; }
+
+  .update-item:hover { padding-left: 0.5rem; }
+
+  .update-date {
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    min-width: 60px;
+  }
+
+  .update-text {
+    font-size: 0.82rem;
+    color: #999;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .update-text strong {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 380px;
+    transform: translateY(16px);
+    transition: transform 0.25s;
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0);
+  }
+
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .modal-sub {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    padding: 0.7rem 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus {
+    border-color: var(--accent);
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: opacity 0.2s;
+  }
+
+  .btn-submit:hover { opacity: 0.85; }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    line-height: 1;
+  }
+
+  .modal { position: relative; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .hero { padding: 8rem 1.5rem 4rem; }
+    .updates { padding: 0 1.5rem 4rem; }
+    .services { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Fatih Durdu</a>
+  <button class="nav-login" onclick="openModal()">
+    <span>Giriş Yap</span>
+    <span>→</span>
+  </button>
+</nav>
+
+<main>
+  <section class="hero">
+    <p class="hero-eyebrow">fatihdurdu.xyz</p>
+    <h1 class="hero-name">Merhaba, ben<br><em>Fatih.</em></h1>
+
+    <div class="services">
+      <a href="#" class="service-item" title="Minecraft">
+        <div class="service-icon">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png" alt="Minecraft">
+        </div>
+        <span>Minecraft</span>
+      </a>
+      <a href="#" class="service-item" title="Nextcloud">
+        <div class="service-icon">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png" alt="Nextcloud">
+        </div>
+        <span>Nextcloud</span>
+      </a>
+      <a href="#" class="service-item" title="Vaultwarden">
+        <div class="service-icon">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/vaultwarden.png" alt="Vaultwarden">
+        </div>
+        <span>Vaultwarden</span>
+      </a>
+      <a href="#" class="service-item" title="Gitea">
+        <div class="service-icon">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/gitea.png" alt="Gitea">
+        </div>
+        <span>Gitea</span>
+      </a>
+      <a href="#" class="service-item" title="Stirling PDF">
+        <div class="service-icon">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/stirling-pdf.png" alt="Stirling PDF">
+        </div>
+        <span>Stirling PDF</span>
+      </a>
+    </div>
+
+    <p class="bio">
+      Buraya kendini tanıtan bir metin yazabilirsin. Kısa, sade, seni anlatan bir şeyler.
+    </p>
+  </section>
+
+  <hr class="divider">
+
+  <section class="updates">
+    <div class="updates-header">
+      <h2 class="updates-title">Güncellemeler</h2>
+      <span class="updates-count">— son notlar</span>
+    </div>
+    <ul class="update-list">
+      <li class="update-item">
+        <span class="update-date">May 2026</span>
+        <span class="update-text"><strong>Site yayına girdi.</strong> Yeni bir başlangıç.</span>
+      </li>
+      <li class="update-item">
+        <span class="update-date">May 2026</span>
+        <span class="update-text"><strong>Sunucu kurulumu tamamlandı.</strong> Nextcloud, Vaultwarden ve diğer servisler çalışıyor.</span>
+      </li>
+      <li class="update-item">
+        <span class="update-date">May 2026</span>
+        <span class="update-text"><strong>Gitea aktif.</strong> Tüm konfigürasyon dosyaları burada arşivleniyor.</span>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  © 2026 Fatih Durdu · fatihdurdu.xyz
+</footer>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 class="modal-title">Giriş</h2>
+    <p class="modal-sub">Servis paneline erişim</p>
+    <div class="form-group">
+      <label>Kullanıcı Adı</label>
+      <input type="text" placeholder="kullanıcı adı" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>Parola</label>
+      <input type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-submit">Giriş Yap →</button>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
