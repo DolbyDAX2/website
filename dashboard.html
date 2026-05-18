@@ -109,6 +109,14 @@ function getToken() { return localStorage.getItem('token'); }
 function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
 
 async function openService(url) {
+  const token = localStorage.getItem('token');
+  if (!token) { window.location.href = '/'; return; }
+  
+  // Önce cookie'yi set et
+  await fetch('https://api.fatihdurdu.xyz/api/set-proxy-token?target=' + encodeURIComponent(url), {
+    headers: { 'Authorization': 'Bearer ' + token }
+  });
+  
   window.open(url, '_blank');
 }
 
