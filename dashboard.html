@@ -305,6 +305,142 @@
     color: var(--text);
   }
 
+  /* PROFILE SETTINGS BUTTON */
+  .profile-settings-section {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.55s;
+  }
+  .profile-btn {
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .profile-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+  .profile-btn:active { transform: translateY(0); }
+
+  /* PROFILE MODAL */
+  .profile-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .profile-modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .profile-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    transform: translateY(20px);
+    transition: transform 0.3s;
+    position: relative;
+  }
+  .profile-modal-overlay.open .profile-modal {
+    transform: translateY(0);
+  }
+  .profile-modal-close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    background: none; border: none;
+    color: var(--muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .profile-modal-close:hover { color: var(--text); }
+  .profile-modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .profile-modal-sub {
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 2rem;
+  }
+  .profile-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+  .profile-field-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .profile-field-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .profile-field-row input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.6rem 0.8rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .profile-field-row input:focus {
+    border-color: var(--accent);
+  }
+  .profile-save-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+  }
+  .profile-save-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .profile-msg {
+    font-size: 0.65rem;
+    margin-top: 0.4rem;
+    min-height: 1.2em;
+  }
+  .profile-msg.success { color: var(--green); }
+  .profile-msg.error { color: var(--red); }
+
   /* INVITE SECTION */
   .invite-section {
     margin-bottom: 3rem;
@@ -457,6 +593,14 @@
   <!-- Bilgi Kartları -->
   <div class="info-grid" id="infoGrid"></div>
 
+  <!-- Profil Ayarları -->
+  <div class="profile-settings-section">
+    <h2 class="section-title">Profil Ayarları</h2>
+    <div style="margin-top:1rem">
+      <button class="profile-btn" onclick="openProfileModal()">✎ E-posta & Şifre Değiştir</button>
+    </div>
+  </div>
+
   <!-- Davet Kodları -->
   <div class="invite-section">
     <div class="invite-header">
@@ -475,6 +619,37 @@
     </table>
   </div>
 </main>
+
+<!-- Profil Ayarları Modal -->
+<div class="profile-modal-overlay" id="profileModalOverlay" onclick="handleProfileOverlayClick(event)">
+  <div class="profile-modal">
+    <button class="profile-modal-close" onclick="closeProfileModal()">✕</button>
+    <h2 class="profile-modal-title">Profil Ayarları</h2>
+    <p class="profile-modal-sub">E-posta ve şifre değiştirme</p>
+
+    <!-- E-posta -->
+    <div class="profile-field-label">E-posta Adresi</div>
+    <div class="profile-field-row">
+      <input type="email" id="profileEmail" placeholder="yeni@eposta.com" autocomplete="email">
+      <button class="profile-save-btn" onclick="updateEmail()">Kaydet</button>
+    </div>
+    <p id="profileEmailMsg" class="profile-msg"></p>
+
+    <hr class="profile-divider">
+
+    <!-- Şifre -->
+    <div class="profile-field-label">Mevcut Şifre</div>
+    <div class="profile-field-row">
+      <input type="password" id="profileCurrentPassword" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="profile-field-label" style="margin-top:1rem">Yeni Şifre</div>
+    <div class="profile-field-row">
+      <input type="password" id="profileNewPassword" placeholder="en az 10 karakter" autocomplete="new-password">
+      <button class="profile-save-btn" onclick="updatePassword()">Kaydet</button>
+    </div>
+    <p id="profilePasswordMsg" class="profile-msg"></p>
+  </div>
+</div>
 
 <script>
 const API = 'https://api.fatihdurdu.xyz';
@@ -653,6 +828,61 @@ async function loadInvites() {
 async function createInvite() {
   const data = await apiFetch('/api/invites', { method: 'POST' });
   if (data.code) loadInvites();
+}
+
+// Profil Modalı
+function openProfileModal() {
+  document.getElementById('profileModalOverlay').classList.add('open');
+  document.getElementById('profileEmail').value = '';
+  document.getElementById('profileCurrentPassword').value = '';
+  document.getElementById('profileNewPassword').value = '';
+  document.getElementById('profileEmailMsg').textContent = '';
+  document.getElementById('profilePasswordMsg').textContent = '';
+}
+
+function closeProfileModal() {
+  document.getElementById('profileModalOverlay').classList.remove('open');
+}
+
+function handleProfileOverlayClick(e) {
+  if (e.target === document.getElementById('profileModalOverlay')) closeProfileModal();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeProfileModal();
+});
+
+async function updateEmail() {
+  const email = document.getElementById('profileEmail').value.trim();
+  const msg = document.getElementById('profileEmailMsg');
+  if (!email) { msg.className = 'profile-msg error'; msg.textContent = 'E-posta adresi gerekli'; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.className = 'profile-msg error'; msg.textContent = 'Geçersiz e-posta formatı'; return; }
+
+  const data = await apiFetch('/api/me/email', { method: 'PUT', body: JSON.stringify({ email }) });
+  if (data.error) { msg.className = 'profile-msg error'; msg.textContent = data.error; }
+  else {
+    msg.className = 'profile-msg success'; msg.textContent = '✓ E-posta güncellendi';
+    // Bilgi kartlarını güncelle
+    const infoCards = document.querySelectorAll('.info-card');
+    if (infoCards[1]) infoCards[1].querySelector('.info-value').textContent = email;
+  }
+}
+
+async function updatePassword() {
+  const current_password = document.getElementById('profileCurrentPassword').value;
+  const new_password = document.getElementById('profileNewPassword').value;
+  const msg = document.getElementById('profilePasswordMsg');
+  if (!current_password) { msg.className = 'profile-msg error'; msg.textContent = 'Mevcut şifre gerekli'; return; }
+  if (!new_password) { msg.className = 'profile-msg error'; msg.textContent = 'Yeni şifre gerekli'; return; }
+  if (new_password.length < 10) { msg.className = 'profile-msg error'; msg.textContent = 'Yeni şifre en az 10 karakter olmalı'; return; }
+
+  const data = await apiFetch('/api/me/password', { method: 'PUT', body: JSON.stringify({ current_password, new_password }) });
+  if (data.error) { msg.className = 'profile-msg error'; msg.textContent = data.error; }
+  else {
+    msg.className = 'profile-msg success'; msg.textContent = '✓ Şifre güncellendi';
+    document.getElementById('profileCurrentPassword').value = '';
+    document.getElementById('profileNewPassword').value = '';
+  }
 }
 
 loadDashboard();
