@@ -557,7 +557,7 @@
     
     <div class="form-group">
       <label>Parola</label>
-      <input type="password" id="regPassword" placeholder="••••••••">
+      <input type="password" id="regPassword" placeholder="en az 10 karakter">
     </div>
     
     <div class="form-group">
@@ -652,6 +652,8 @@ async function handleRegister() {
   errEl.textContent = '';
 
   if (!username || !email || !password || !invite_code) { errEl.textContent = 'Tüm alanları doldurun.'; return; }
+
+  if (password.length < 10) { errEl.textContent = 'Parola en az 10 karakter olmalıdır.'; return; }
 
   try {
     const res = await fetch(API + '/api/register', {
