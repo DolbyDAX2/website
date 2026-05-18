@@ -108,6 +108,10 @@ const API = 'https://api.fatihdurdu.xyz';
 function getToken() { return localStorage.getItem('token'); }
 function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
 
+async function openService(url) {
+  window.open(url, '_blank');
+}
+
 async function apiFetch(path, opts = {}) {
   const res = await fetch(API + path, {
     ...opts,
@@ -134,7 +138,7 @@ async function loadDashboard() {
   // Servisler
   const grid = document.getElementById('servicesGrid');
   grid.innerHTML = services.map(s => `
-    <a href="${s.url}" target="_blank" class="service-card">
+    <a href="#" onclick="openService('${s.url}'); return false;" class="service-card">
       <img src="${s.icon}" alt="${s.name}" onerror="this.style.display='none'">
       <span class="service-name">${s.name}</span>
       <span class="service-arrow">Aç →</span>
@@ -192,5 +196,6 @@ async function createInvite() {
 
 loadDashboard();
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"823ded4795dd441fadbac0298897e1e9","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
