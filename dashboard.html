@@ -33,8 +33,7 @@
     background: var(--bg); padding: 1.8rem 1.5rem;
     display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
     text-decoration: none; color: var(--text);
-    transition: background 0.2s;
-    cursor: pointer;
+    transition: background 0.2s; cursor: pointer;
   }
   .service-card:hover { background: var(--surface); }
   .service-card img { width: 32px; height: 32px; object-fit: contain; filter: brightness(0.8); transition: filter 0.2s; }
@@ -106,18 +105,10 @@
 const API = 'https://api.fatihdurdu.xyz';
 
 function getToken() { return localStorage.getItem('token'); }
-function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
 
-async function openService(url) {
-  const token = localStorage.getItem('token');
-  if (!token) { window.location.href = '/'; return; }
-  
-  // Önce cookie'yi set et
-  await fetch('https://api.fatihdurdu.xyz/api/set-proxy-token?target=' + encodeURIComponent(url), {
-    headers: { 'Authorization': 'Bearer ' + token }
-  });
-  
-  window.open(url, '_blank');
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = '/';
 }
 
 async function apiFetch(path, opts = {}) {
@@ -143,17 +134,15 @@ async function loadDashboard() {
   document.getElementById('navUsername').textContent = user.username;
   document.getElementById('pageRole').textContent = user.role === 'admin' ? 'Yönetici Paneli' : 'Kullanıcı Paneli';
 
-  // Servisler
   const grid = document.getElementById('servicesGrid');
   grid.innerHTML = services.map(s => `
-    <a href="#" onclick="openService('${s.url}'); return false;" class="service-card">
+    <a href="${s.url}" target="_blank" class="service-card">
       <img src="${s.icon}" alt="${s.name}" onerror="this.style.display='none'">
       <span class="service-name">${s.name}</span>
       <span class="service-arrow">Aç →</span>
     </a>
   `).join('');
 
-  // Kullanıcı bilgisi
   document.getElementById('infoGrid').innerHTML = `
     <div class="info-card"><div class="info-label">Kullanıcı Adı</div><div class="info-value">${user.username}</div></div>
     <div class="info-card"><div class="info-label">E-posta</div><div class="info-value">${user.email}</div></div>
@@ -161,10 +150,8 @@ async function loadDashboard() {
     <div class="info-card"><div class="info-label">Kayıt Tarihi</div><div class="info-value">${formatDate(user.created_at)}</div></div>
   `;
 
-  // Davet kodları
   loadInvites();
 
-  // Admin tablosu
   if (user.role === 'admin') {
     document.getElementById('adminSection').style.display = 'block';
     const users = await apiFetch('/api/admin/users');
@@ -202,17 +189,7 @@ async function createInvite() {
   if (data.code) loadInvites();
 }
 
-async function logout() {
-  await fetch('https://api.fatihdurdu.xyz/api/logout', {
-    method: 'POST',
-    credentials: 'include'
-  });
-  localStorage.removeItem('token');
-  window.location.href = '/';
-}
-
 loadDashboard();
 </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"823ded4795dd441fadbac0298897e1e9","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
