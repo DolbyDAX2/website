@@ -202,6 +202,15 @@ async function createInvite() {
   if (data.code) loadInvites();
 }
 
+async function logout() {
+  await fetch('https://api.fatihdurdu.xyz/api/logout', {
+    method: 'POST',
+    credentials: 'include'
+  });
+  localStorage.removeItem('token');
+  window.location.href = '/';
+}
+
 loadDashboard();
 </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"823ded4795dd441fadbac0298897e1e9","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
