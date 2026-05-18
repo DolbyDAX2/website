@@ -3,323 +3,194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kullanıcı Paneli — fatihdurdu.xyz</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Dashboard — Fatih Durdu</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0d0d0d;
-    --surface: #141414;
-    --border: #1e1e1e;
-    --text: #e8e6e1;
-    --muted: #555;
-    --accent: #c8a96e;
-    --accent-dim: rgba(200,169,110,0.08);
-    --success: #5f9e7b;
+    --bg: #0d0d0d; --surface: #141414; --border: #1e1e1e;
+    --text: #e8e6e1; --muted: #555; --accent: #c8a96e;
+    --accent-dim: rgba(200,169,110,0.12);
   }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-weight: 300;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* PANEL NAV */
+  body { background: var(--bg); color: var(--text); font-family: 'DM Mono', monospace; font-weight: 300; min-height: 100vh; }
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 3rem;
-    background: rgba(13,13,13,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem; background: rgba(13,13,13,0.9);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
   }
-
-  .nav-user {
-    font-size: 0.82rem;
-    letter-spacing: 0.05em;
-    color: var(--text);
-  }
-
-  .nav-user strong {
-    color: var(--accent);
-    font-weight: 400;
-  }
-
-  .btn-logout {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    padding: 0.4rem 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+  .nav-logo { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--text); text-decoration: none; }
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-user { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; }
+  .nav-user span { color: var(--accent); }
+  .nav-logout { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; background: none; border: none; cursor: pointer; transition: color 0.2s; }
+  .nav-logout:hover { color: var(--text); }
+  main { padding: 7rem 3rem 4rem; max-width: 1000px; margin: 0 auto; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 0.4rem; }
+  .page-sub { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 3rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 3rem; }
+  .service-card {
+    background: var(--bg); padding: 1.8rem 1.5rem;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
+    text-decoration: none; color: var(--text);
+    transition: background 0.2s;
     cursor: pointer;
-    transition: all 0.2s;
   }
-
-  .btn-logout:hover {
-    border-color: #9e3f3f;
-    color: #9e3f3f;
-    background: rgba(158, 63, 63, 0.05);
+  .service-card:hover { background: var(--surface); }
+  .service-card img { width: 32px; height: 32px; object-fit: contain; filter: brightness(0.8); transition: filter 0.2s; }
+  .service-card:hover img { filter: brightness(1); }
+  .service-name { font-size: 0.78rem; letter-spacing: 0.05em; }
+  .service-arrow { font-size: 0.65rem; color: var(--muted); margin-top: auto; transition: color 0.2s; }
+  .service-card:hover .service-arrow { color: var(--accent); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1rem; margin-bottom: 1.5rem; color: var(--text); }
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1px; background: var(--border); margin-bottom: 3rem; }
+  .info-card { background: var(--bg); padding: 1.5rem; }
+  .info-label { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .info-value { font-size: 0.85rem; color: var(--text); }
+  .invite-section { margin-bottom: 3rem; }
+  .invite-btn {
+    padding: 0.6rem 1.2rem; border: 1px solid var(--accent); color: var(--accent);
+    background: transparent; font-family: 'DM Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s, color 0.2s; margin-bottom: 1.5rem;
   }
-
-  /* MAIN CONTAINER */
-  .container {
-    max-width: 1000px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 8rem 3rem 4rem;
-    flex: 1;
-  }
-
-  .welcome-section {
-    margin-bottom: 3rem;
-  }
-
-  .welcome-section h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.2rem;
-    line-height: 1.2;
-    margin-bottom: 0.5rem;
-  }
-
-  .welcome-section p {
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-
-  /* STATS ROW */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1.5rem;
-    position: relative;
-  }
-
-  .stat-label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
-  }
-
-  .stat-value {
-    font-size: 1.1rem;
-    color: var(--text);
-  }
-
-  .stat-value.active {
-    color: var(--success);
-  }
-
-  /* SERVICES GRID */
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5rem;
-  }
-
-  .panel-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .panel-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 2rem;
-    text-decoration: none;
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 180px;
-    transition: border-color 0.2s, background 0.2s, transform 0.2s;
-  }
-
-  .panel-card:hover {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-    transform: translateY(-2px);
-  }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .card-icon {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    filter: brightness(0.9);
-  }
-
-  .card-status {
-    font-size: 0.58rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.2rem 0.5rem;
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-
-  .panel-card:hover .card-status {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .card-meta {
-    margin-top: 2rem;
-  }
-
-  .card-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.2rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .card-desc {
-    font-size: 0.75rem;
-    color: #888;
-    line-height: 1.5;
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 1.5rem;
-    font-size: 0.62rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    margin-top: auto;
-  }
-
-  @media (max-width: 600px) {
-    nav { padding: 1rem 1.5rem; }
-    .container { padding: 7rem 1.5rem 3rem; }
-    .stats-grid { grid-template-columns: 1fr; }
-    .panel-grid { grid-template-columns: 1fr; }
-  }
+  .invite-btn:hover { background: var(--accent); color: var(--bg); }
+  .invite-list { list-style: none; }
+  .invite-item { display: flex; align-items: center; gap: 2rem; padding: 0.8rem 0; border-top: 1px solid var(--border); font-size: 0.75rem; }
+  .invite-code { color: var(--accent); letter-spacing: 0.1em; font-size: 0.8rem; }
+  .invite-status { color: var(--muted); font-size: 0.65rem; }
+  .invite-used { color: #4caf50; }
+  .admin-section { margin-bottom: 3rem; }
+  .users-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  .users-table th { text-align: left; padding: 0.6rem 1rem; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .users-table td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); color: var(--text); }
+  .role-badge { font-size: 0.6rem; padding: 0.2rem 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .role-admin { color: var(--accent); border: 1px solid var(--accent); }
+  .role-user { color: var(--muted); border: 1px solid var(--border); }
+  @media (max-width: 600px) { nav { padding: 1rem 1.5rem; } main { padding: 6rem 1.5rem 3rem; } }
 </style>
 </head>
 <body>
-
 <nav>
-  <div class="nav-user">oturum: <strong>ziyaretci_01</strong></div>
-  <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+  <a href="/" class="nav-logo">Fatih Durdu</a>
+  <div class="nav-right">
+    <span class="nav-user">Merhaba, <span id="navUsername">—</span></span>
+    <button class="nav-logout" onclick="logout()">Çıkış →</button>
+  </div>
 </nav>
 
-<main class="container">
-  
-  <section class="welcome-section">
-    <h1>Erişim Paneli</h1>
-    <p>Hesabınıza tanımlı aktif dijital servisler listelenmektedir.</p>
-  </section>
+<main>
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-sub" id="pageRole">—</p>
 
-  <section class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-label">Hesap Durumu</div>
-      <div class="stat-value active">● Aktif Üye</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Nextcloud Kotası</div>
-      <div class="stat-value">5.00 GB</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Sunucu Lokasyonu</div>
-      <div class="stat-value">Oracle ARM Node</div>
-    </div>
-  </section>
+  <div class="services-grid" id="servicesGrid"></div>
 
-  <section class="services-section">
-    <h2 class="section-title">Kullanılabilir Servisler</h2>
-    
-    <div class="panel-grid">
-      
-      <a href="https://nextcloud.fatihdurdu.xyz" target="_blank" class="panel-card">
-        <div class="card-top">
-          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nextcloud.png" class="card-icon" alt="Nextcloud">
-          <div class="card-status">Bağlan</div>
-        </div>
-        <div class="card-meta">
-          <h3 class="card-title">Nextcloud</h3>
-          <p class="card-desc">Kişisel dosya depolama, senkronizasyon ve bulut alanı.</p>
-        </div>
-      </a>
+  <div class="info-grid" id="infoGrid"></div>
 
-      <a href="https://vaultwarden.fatihdurdu.xyz" target="_blank" class="panel-card">
-        <div class="card-top">
-          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/vaultwarden.png" class="card-icon" alt="Vaultwarden">
-          <div class="card-status">Bağlan</div>
-        </div>
-        <div class="card-meta">
-          <h3 class="card-title">Vaultwarden</h3>
-          <p class="card-desc">Güvenli şifre yöneticisi şifrelenmiş parola kasası.</p>
-        </div>
-      </a>
+  <div class="invite-section">
+    <h2 class="section-title">Davet Kodları</h2>
+    <button class="invite-btn" onclick="createInvite()">+ Yeni Kod Oluştur</button>
+    <ul class="invite-list" id="inviteList"></ul>
+  </div>
 
-      <a href="https://pdf.fatihdurdu.xyz" target="_blank" class="panel-card">
-        <div class="card-top">
-          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/stirling-pdf.png" class="card-icon" alt="Stirling PDF">
-          <div class="card-status">Bağlan</div>
-        </div>
-        <div class="card-meta">
-          <h3 class="card-title">Stirling PDF</h3>
-          <p class="card-desc">Gelişmiş yerel PDF dönüştürme ve düzenleme araçları.</p>
-        </div>
-      </a>
-
-      <a href="#" class="panel-card" onclick="alert('Minecraft Sunucu Adresi: mc.fatihdurdu.xyz'); return false;">
-        <div class="card-top">
-          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png" class="card-icon" alt="Minecraft">
-          <div class="card-status">Bilgi</div>
-        </div>
-        <div class="card-meta">
-          <h3 class="card-title">Minecraft Server</h3>
-          <p class="card-desc">Özel hayatta kalma sunucusu. Bağlantı adresi: mc.fatihdurdu.xyz</p>
-        </div>
-      </a>
-
-    </div>
-  </section>
-
+  <div class="admin-section" id="adminSection" style="display:none">
+    <h2 class="section-title">Kullanıcılar</h2>
+    <table class="users-table">
+      <thead><tr><th>Kullanıcı</th><th>E-posta</th><th>Rol</th><th>Kayıt</th></tr></thead>
+      <tbody id="usersTable"></tbody>
+    </table>
+  </div>
 </main>
 
-<footer>
-  © 2026 Fatih Durdu · fatihdurdu.xyz
-</footer>
-
 <script>
-  function logout() {
-    alert("Oturum kapatılıyor...");
-    window.location.href = "/";
-  }
-</script>
+const API = 'https://api.fatihdurdu.xyz';
 
+function getToken() { return localStorage.getItem('token'); }
+function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
+
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(API + path, {
+    ...opts,
+    headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json', ...opts.headers }
+  });
+  return res.json();
+}
+
+function formatDate(d) {
+  return new Date(d).toLocaleDateString('tr-TR');
+}
+
+async function loadDashboard() {
+  if (!getToken()) { window.location.href = '/'; return; }
+
+  const data = await apiFetch('/api/me');
+  if (data.error) { logout(); return; }
+
+  const { user, services } = data;
+
+  document.getElementById('navUsername').textContent = user.username;
+  document.getElementById('pageRole').textContent = user.role === 'admin' ? 'Yönetici Paneli' : 'Kullanıcı Paneli';
+
+  // Servisler
+  const grid = document.getElementById('servicesGrid');
+  grid.innerHTML = services.map(s => `
+    <a href="${s.url}" target="_blank" class="service-card">
+      <img src="${s.icon}" alt="${s.name}" onerror="this.style.display='none'">
+      <span class="service-name">${s.name}</span>
+      <span class="service-arrow">Aç →</span>
+    </a>
+  `).join('');
+
+  // Kullanıcı bilgisi
+  document.getElementById('infoGrid').innerHTML = `
+    <div class="info-card"><div class="info-label">Kullanıcı Adı</div><div class="info-value">${user.username}</div></div>
+    <div class="info-card"><div class="info-label">E-posta</div><div class="info-value">${user.email}</div></div>
+    <div class="info-card"><div class="info-label">Referans Kodun</div><div class="info-value" style="color:var(--accent)">${user.referral_code}</div></div>
+    <div class="info-card"><div class="info-label">Kayıt Tarihi</div><div class="info-value">${formatDate(user.created_at)}</div></div>
+  `;
+
+  // Davet kodları
+  loadInvites();
+
+  // Admin tablosu
+  if (user.role === 'admin') {
+    document.getElementById('adminSection').style.display = 'block';
+    const users = await apiFetch('/api/admin/users');
+    document.getElementById('usersTable').innerHTML = users.map(u => `
+      <tr>
+        <td>${u.username}</td>
+        <td>${u.email}</td>
+        <td><span class="role-badge role-${u.role}">${u.role}</span></td>
+        <td>${formatDate(u.created_at)}</td>
+      </tr>
+    `).join('');
+  }
+}
+
+async function loadInvites() {
+  const invites = await apiFetch('/api/invites');
+  const list = document.getElementById('inviteList');
+  if (!invites.length) {
+    list.innerHTML = '<li style="font-size:0.75rem;color:var(--muted);padding:1rem 0;border-top:1px solid var(--border)">Henüz davet kodu yok.</li>';
+    return;
+  }
+  list.innerHTML = invites.map(i => `
+    <li class="invite-item">
+      <span class="invite-code">${i.code}</span>
+      <span class="invite-status ${i.used_by_username ? 'invite-used' : ''}">
+        ${i.used_by_username ? '✓ ' + i.used_by_username + ' kullandı' : 'Kullanılmadı'}
+      </span>
+      <span style="color:var(--muted);font-size:0.65rem">${formatDate(i.created_at)}</span>
+    </li>
+  `).join('');
+}
+
+async function createInvite() {
+  const data = await apiFetch('/api/invites', { method: 'POST' });
+  if (data.code) loadInvites();
+}
+
+loadDashboard();
+</script>
 </body>
 </html>

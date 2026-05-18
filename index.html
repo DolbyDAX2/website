@@ -524,13 +524,14 @@
     <p class="modal-sub">Servis paneline erişim</p>
     <div class="form-group">
       <label>Kullanıcı Adı</label>
-      <input type="text" placeholder="kullanıcı adı" autocomplete="username">
+      <input type="text" id="loginUsername" placeholder="kullanıcı adı" autocomplete="username">
     </div>
     <div class="form-group">
       <label>Parola</label>
-      <input type="password" placeholder="••••••••" autocomplete="current-password">
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
     </div>
-    <button class="btn-submit">Giriş Yap →</button>
+    <p id="loginError" style="color:#e74c3c;font-size:0.7rem;margin-top:0.5rem"></p>
+    <button class="btn-submit" onclick="handleLogin()">Giriş Yap →</button>
     
     <div class="modal-footer">
       Hesabın yok mu? <a href="#" onclick="switchToRegister(event)">Kaydol</a>
@@ -546,26 +547,27 @@
     
     <div class="form-group">
       <label>Kullanıcı Adı</label>
-      <input type="text" placeholder="kullanıcı adı" autocomplete="username">
+      <input type="text" id="regUsername" placeholder="kullanıcı adı">
     </div>
     
     <div class="form-group">
       <label>E-Posta</label>
-      <input type="email" placeholder="ornek@alanadi.com" autocomplete="email">
+      <input type="email" id="regEmail" placeholder="ornek@alanadi.com">
     </div>
     
     <div class="form-group">
       <label>Parola</label>
-      <input type="password" placeholder="••••••••" autocomplete="new-password">
+      <input type="password" id="regPassword" placeholder="••••••••">
     </div>
     
     <div class="form-group">
       <label>Referans Kodu</label>
-      <input type="text" placeholder="REF-XXXX">
+      <input type="text" id="regInvite" placeholder="REF-XXXX">
     </div>
     <p class="form-note">* Kayıt olabilmek için geçerli bir davet kodu girmelisiniz.</p>
+    <p id="registerError" style="color:#e74c3c;font-size:0.7rem;margin-top:0.5rem"></p>
     
-    <button class="btn-submit">Hesap Oluştur →</button>
+    <button class="btn-submit" onclick="handleRegister()">Hesap Oluştur →</button>
     
     <div class="modal-footer">
       Zaten hesabın var mı? <a href="#" onclick="switchToLogin(event)">Giriş Yap</a>
@@ -574,45 +576,98 @@
 </div>
 
 <script>
-  // Modalları Açma / Kapatma Mantığı
-  function openModal() {
-    document.getElementById('modalOverlay').classList.add('open');
-  }
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-  }
-  function handleOverlayClick(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  }
+const API = 'https://api.fatihdurdu.xyz';
 
-  function openRegisterModal() {
-    document.getElementById('registerModalOverlay').classList.add('open');
-  }
-  function closeRegisterModal() {
-    document.getElementById('registerModalOverlay').classList.remove('open');
-  }
-  function handleRegisterOverlayClick(e) {
-    if (e.target === document.getElementById('registerModalOverlay')) closeRegisterModal();
-  }
+// Zaten giriş yapılmışsa dashboard'a yönlendir
+if (localStorage.getItem('token')) {
+  window.location.href = '/dashboard.html';
+}
 
-  function switchToRegister(e) {
-    e.preventDefault();
-    closeModal();
-    setTimeout(openRegisterModal, 200);
-  }
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+}
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
 
-  function switchToLogin(e) {
-    e.preventDefault();
-    closeRegisterModal();
-    setTimeout(openModal, 200);
-  }
+function openRegisterModal() {
+  document.getElementById('registerModalOverlay').classList.add('open');
+}
+function closeRegisterModal() {
+  document.getElementById('registerModalOverlay').classList.remove('open');
+}
+function handleRegisterOverlayClick(e) {
+  if (e.target === document.getElementById('registerModalOverlay')) closeRegisterModal();
+}
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      closeModal();
-      closeRegisterModal();
-    }
-  });
+function switchToRegister(e) {
+  e.preventDefault();
+  closeModal();
+  setTimeout(openRegisterModal, 200);
+}
+function switchToLogin(e) {
+  e.preventDefault();
+  closeRegisterModal();
+  setTimeout(openModal, 200);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeRegisterModal(); }
+});
+
+// Giriş
+async function handleLogin() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+
+  if (!username || !password) { errEl.textContent = 'Tüm alanları doldurun.'; return; }
+
+  try {
+    const res = await fetch(API + '/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (data.error) { errEl.textContent = data.error; return; }
+    localStorage.setItem('token', data.token);
+    window.location.href = '/dashboard.html';
+  } catch {
+    errEl.textContent = 'Sunucuya bağlanılamadı.';
+  }
+}
+
+// Kayıt
+async function handleRegister() {
+  const username = document.getElementById('regUsername').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const invite_code = document.getElementById('regInvite').value.trim();
+  const errEl = document.getElementById('registerError');
+  errEl.textContent = '';
+
+  if (!username || !email || !password || !invite_code) { errEl.textContent = 'Tüm alanları doldurun.'; return; }
+
+  try {
+    const res = await fetch(API + '/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password, invite_code })
+    });
+    const data = await res.json();
+    if (data.error) { errEl.textContent = data.error; return; }
+    errEl.style.color = '#4caf50';
+    errEl.textContent = 'Hesap oluşturuldu! Giriş yapabilirsiniz.';
+    setTimeout(() => { closeRegisterModal(); openModal(); }, 1500);
+  } catch {
+    errEl.textContent = 'Sunucuya bağlanılamadı.';
+  }
+}
 </script>
 
 </body>
