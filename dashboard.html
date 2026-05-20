@@ -652,7 +652,20 @@
 </div>
 
 <script>
+// CSRF Token koruması için hidden input
+const CSRF_TOKEN = document.createElement('input');
+CSRF_TOKEN.type = 'hidden';
+CSRF_TOKEN.name = 'csrf_token';
+CSRF_TOKEN.value = btoa(Math.random().toString(36) + Date.now()).replace(/[^a-zA-Z0-9]/g, '');
+
 const API = 'https://api.fatihdurdu.xyz';
+
+// XSS koruması için escape fonksiyonu
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
 
 function getToken() { return localStorage.getItem('token'); }
 
@@ -696,7 +709,7 @@ async function checkServiceStatuses() {
     let totalCount = statuses.length;
 
     statuses.forEach(s => {
-      const card = document.querySelector(`.service-card[data-id="${s.id}"]`);
+      const card = document.querySelector(`.service-card[data-id="${escapeHtml(s.id)}"]`);
       if (!card) return;
 
       const badge = card.querySelector('.service-status-badge');
@@ -707,30 +720,30 @@ async function checkServiceStatuses() {
         onlineCount++;
         badge.className = 'service-status-badge online';
         dot.className = 'service-status-dot online';
-        badge.textContent = 'Çevrimiçi';
+        badge.textContent = escapeHtml('Çevrimiçi');
         badge.prepend(dot);
-        latencyEl.textContent = formatLatency(s.latency);
+        latencyEl.textContent = escapeHtml(formatLatency(s.latency));
       } else if (s.status === 'degraded') {
         badge.className = 'service-status-badge degraded';
         dot.className = 'service-status-dot degraded';
-        badge.textContent = 'Sınırlı';
+        badge.textContent = escapeHtml('Sınırlı');
         badge.prepend(dot);
-        latencyEl.textContent = '⚠ ' + s.statusCode;
+        latencyEl.textContent = '⚠ ' + escapeHtml(s.statusCode || '—');
       } else {
         badge.className = 'service-status-badge offline';
         dot.className = 'service-status-dot offline';
-        badge.textContent = 'Çevrimdışı';
+        badge.textContent = escapeHtml('Çevrimdışı');
         badge.prepend(dot);
-        latencyEl.textContent = '—';
+        latencyEl.textContent = escapeHtml('—');
       }
     });
 
-    document.getElementById('statOnline').textContent = onlineCount;
-    document.getElementById('statTotal').textContent = totalCount;
+    document.getElementById('statOnline').textContent = escapeHtml(String(onlineCount));
+    document.getElementById('statTotal').textContent = escapeHtml(String(totalCount));
     document.getElementById('statStatus').textContent =
-      onlineCount === totalCount ? 'Tümü Çevrimiçi' :
-      onlineCount === 0 ? 'Tümü Çevrimdışı' :
-      onlineCount + '/' + totalCount + ' çevrimiçi';
+      onlineCount === totalCount ? escapeHtml('Tümü Çevrimiçi') :
+      onlineCount === 0 ? escapeHtml('Tümü Çevrimdışı') :
+      escapeHtml(onlineCount + '/' + totalCount + ' çevrimiçi');
 
     updateRefreshIndicator('live', 'Canlı · ' + new Date().toLocaleTimeString('tr-TR'));
   } catch (e) {
@@ -746,20 +759,20 @@ async function loadDashboard() {
 
   const { user, services } = data;
 
-  document.getElementById('navUsername').textContent = user.username;
-  document.getElementById('pageRole').textContent = user.role === 'admin' ? 'Yönetici Paneli' : 'Kullanıcı Paneli';
+  document.getElementById('navUsername').textContent = escapeHtml(user.username);
+  document.getElementById('pageRole').textContent = escapeHtml(user.role === 'admin' ? 'Yönetici Paneli' : 'Kullanıcı Paneli');
 
   const grid = document.getElementById('servicesGrid');
   grid.innerHTML = services.map(s => `
-    <a href="${s.url}" target="_blank" class="service-card" data-id="${s.id}">
+    <a href="${escapeHtml(s.url)}" target="_blank" class="service-card" data-id="${escapeHtml(s.id)}">
       <div class="service-top">
-        <img src="${s.icon}" alt="${s.name}" onerror="this.style.display='none'">
+        <img src="${escapeHtml(s.icon)}" alt="${escapeHtml(s.name)}" onerror="this.style.display='none'">
         <span class="service-status-badge checking">
           <span class="service-status-dot checking"></span>
           Kontrol
         </span>
       </div>
-      <span class="service-name">${s.name}</span>
+      <span class="service-name">${escapeHtml(s.name)}</span>
       <div class="service-meta">
         <span class="service-latency">—</span>
         <span class="service-arrow">Aç →</span>
@@ -770,19 +783,19 @@ async function loadDashboard() {
   document.getElementById('infoGrid').innerHTML = `
     <div class="info-card">
       <div class="info-label">Kullanıcı Adı</div>
-      <div class="info-value">${user.username}</div>
+      <div class="info-value">${escapeHtml(user.username)}</div>
     </div>
     <div class="info-card">
       <div class="info-label">E-posta</div>
-      <div class="info-value">${user.email}</div>
+      <div class="info-value">${escapeHtml(user.email)}</div>
     </div>
     <div class="info-card">
       <div class="info-label">Referans Kodun</div>
-      <div class="info-value" style="color:var(--accent);letter-spacing:0.15em">${user.referral_code}</div>
+      <div class="info-value" style="color:var(--accent);letter-spacing:0.15em">${escapeHtml(user.referral_code)}</div>
     </div>
     <div class="info-card">
       <div class="info-label">Kayıt Tarihi</div>
-      <div class="info-value">${formatDate(user.created_at)}</div>
+      <div class="info-value">${escapeHtml(formatDate(user.created_at))}</div>
     </div>
   `;
 
@@ -793,10 +806,10 @@ async function loadDashboard() {
     const users = await apiFetch('/api/admin/users');
     document.getElementById('usersTable').innerHTML = users.map(u => `
       <tr>
-        <td>${u.username}</td>
-        <td>${u.email}</td>
-        <td><span class="role-badge role-${u.role}">${u.role}</span></td>
-        <td>${formatDate(u.created_at)}</td>
+        <td>${escapeHtml(u.username)}</td>
+        <td>${escapeHtml(u.email)}</td>
+        <td><span class="role-badge role-${escapeHtml(u.role)}">${escapeHtml(u.role)}</span></td>
+        <td>${escapeHtml(formatDate(u.created_at))}</td>
       </tr>
     `).join('');
   }
@@ -816,11 +829,11 @@ async function loadInvites() {
   }
   list.innerHTML = invites.map(i => `
     <li class="invite-item">
-      <span class="invite-code">${i.code}</span>
-      <span class="invite-status ${i.used_by_username ? 'invite-used' : ''}">
-        ${i.used_by_username ? '✓ ' + i.used_by_username + ' kullandı' : 'Kullanılmadı'}
+      <span class="invite-code">${escapeHtml(i.code)}</span>
+      <span class="invite-status ${escapeHtml(i.used_by_username ? 'invite-used' : '')}">
+        ${escapeHtml(i.used_by_username ? '✓ ' + i.used_by_username + ' kullandı' : 'Kullanılmadı')}
       </span>
-      <span style="color:var(--muted);font-size:0.65rem;margin-left:auto">${formatDate(i.created_at)}</span>
+      <span style="color:var(--muted);font-size:0.65rem;margin-left:auto">${escapeHtml(formatDate(i.created_at))}</span>
     </li>
   `).join('');
 }

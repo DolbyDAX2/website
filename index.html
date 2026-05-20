@@ -530,7 +530,7 @@
       <label>Parola</label>
       <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
     </div>
-    <p id="loginError" style="color:#e74c3c;font-size:0.7rem;margin-top:0.5rem"></p>
+    <p id="loginError" style="color:#e74c3c;font-size:0.7rem;margin-top:0.5rem" role="alert"></p>
     <button class="btn-submit" onclick="handleLogin()">Giriş Yap →</button>
     
     <div class="modal-footer">
@@ -565,7 +565,7 @@
       <input type="text" id="regInvite" placeholder="REF-XXXX">
     </div>
     <p class="form-note">* Kayıt olabilmek için geçerli bir davet kodu girmelisiniz.</p>
-    <p id="registerError" style="color:#e74c3c;font-size:0.7rem;margin-top:0.5rem"></p>
+    <p id="registerError" style="color:#e74c3c;font-size:0.7rem;margin-top:0.5rem" role="alert"></p>
     
     <button class="btn-submit" onclick="handleRegister()">Hesap Oluştur →</button>
     
@@ -576,7 +576,20 @@
 </div>
 
 <script>
+// CSRF Token koruması için hidden input
+const CSRF_TOKEN = document.createElement('input');
+CSRF_TOKEN.type = 'hidden';
+CSRF_TOKEN.name = 'csrf_token';
+CSRF_TOKEN.value = btoa(Math.random().toString(36) + Date.now()).replace(/[^a-zA-Z0-9]/g, '');
+
 const API = 'https://api.fatihdurdu.xyz';
+
+// XSS koruması için escape fonksiyonu
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
 
 // Zaten giriş yapılmışsa dashboard'a yönlendir
 if (localStorage.getItem('token')) {
@@ -631,14 +644,14 @@ async function handleLogin() {
     const res = await fetch(API + '/api/login', {
       method: 'POST',
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': CSRF_TOKEN.value },
       body: JSON.stringify({ username, password })
     });
     const data = await res.json();
-    if (data.error) { errEl.textContent = data.error; return; }
+    if (data.error) { errEl.textContent = escapeHtml(data.error); return; }
     localStorage.setItem('token', data.token);
     window.location.href = '/dashboard.html';
-  } catch {
+  } catch (e) {
     errEl.textContent = 'Sunucuya bağlanılamadı.';
   }
 }
@@ -659,15 +672,15 @@ async function handleRegister() {
   try {
     const res = await fetch(API + '/api/register', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': CSRF_TOKEN.value },
       body: JSON.stringify({ username, email, password, invite_code })
     });
     const data = await res.json();
-    if (data.error) { errEl.textContent = data.error; return; }
+    if (data.error) { errEl.textContent = escapeHtml(data.error); return; }
     errEl.style.color = '#4caf50';
     errEl.textContent = 'Hesap oluşturuldu! Giriş yapabilirsiniz.';
     setTimeout(() => { closeRegisterModal(); openModal(); }, 1500);
-  } catch {
+  } catch (e) {
     errEl.textContent = 'Sunucuya bağlanılamadı.';
   }
 }
