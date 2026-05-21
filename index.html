@@ -643,8 +643,7 @@ async function handleLogin() {
   try {
     const res = await fetch(API + '/api/login', {
       method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': CSRF_TOKEN.value },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })
     });
     const data = await res.json();
@@ -672,7 +671,7 @@ async function handleRegister() {
   try {
     const res = await fetch(API + '/api/register', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': CSRF_TOKEN.value },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password, invite_code })
     });
     const data = await res.json();
