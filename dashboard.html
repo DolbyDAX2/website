@@ -711,7 +711,7 @@ function updateRefreshIndicator(status, label, containerId) {
 }
 
 async function checkMinecraftStatus() {
-  updateRefreshIndicator('checking', 'Kontrol ediliyor...', 'mc');
+  // updateRefreshIndicator('checking', 'Kontrol ediliyor...', 'mc');
   try {
     const data = await apiFetch('/api/minecraft/status');
     const grid = document.getElementById('minecraftGrid');
