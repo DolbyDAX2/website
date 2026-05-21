@@ -589,6 +589,16 @@
     </div>
   </div>
   <div class="services-grid" id="servicesGrid"></div>
+  
+  <!-- Minecraft Sunucusu -->
+  <div class="section-header" style="margin-top: 2rem">
+    <h2 class="section-title">Minecraft Sunucusu</h2>
+    <div class="status-refresh">
+      <span class="status-dot checking" id="mcRefreshDot"></span>
+      <span id="mcRefreshLabel">Kontrol ediliyor...</span>
+    </div>
+  </div>
+  <div class="services-grid" id="minecraftGrid"></div>
 
   <!-- Bilgi Kartları -->
   <div class="info-grid" id="infoGrid"></div>
@@ -693,11 +703,39 @@ function formatLatency(ms) {
   return (ms / 1000).toFixed(1) + 's';
 }
 
-function updateRefreshIndicator(status, label) {
-  const dot = document.getElementById('refreshDot');
-  const lbl = document.getElementById('refreshLabel');
+function updateRefreshIndicator(status, label, containerId) {
+  const dot = document.getElementById(containerId ? containerId + 'Dot' : 'refreshDot');
+  const lbl = document.getElementById(containerId ? containerId + 'Label' : 'refreshLabel');
   dot.className = 'status-dot ' + status;
   lbl.textContent = label;
+}
+
+async function checkMinecraftStatus() {
+  updateRefreshIndicator('checking', 'Kontrol ediliyor...', 'mc');
+  try {
+    const data = await apiFetch('/api/minecraft/status');
+    const card = document.querySelector('#minecraftGrid .service-card');
+    if (!card) return;
+
+    const badge = card.querySelector('.service-status-badge');
+    const dot = badge.querySelector('.service-status-dot');
+    const latencyEl = card.querySelector('.service-latency');
+
+    if (data.status === 'online') {
+      card.style.display = 'flex';
+      badge.className = 'service-status-badge online';
+      dot.className = 'service-status-dot online';
+      badge.textContent = escapeHtml('Çevrimiçi');
+      badge.prepend(dot);
+      latencyEl.textContent = escapeHtml('—');
+      updateRefreshIndicator('live', 'Canlı · ' + new Date().toLocaleTimeString('tr-TR'), 'mc');
+    } else {
+      card.style.display = 'none';
+      updateRefreshIndicator('live', 'Çevrimdışı', 'mc');
+    }
+  } catch (e) {
+    updateRefreshIndicator('checking', 'Güncellenemedi', 'mc');
+  }
 }
 
 async function checkServiceStatuses() {
@@ -816,8 +854,12 @@ async function loadDashboard() {
 
   // Servis durumlarını kontrol et
   await checkServiceStatuses();
+  await checkMinecraftStatus();
   // Her 30 saniyede bir yenile
-  setInterval(checkServiceStatuses, 30000);
+  setInterval(() => {
+    checkServiceStatuses();
+    checkMinecraftStatus();
+  }, 30000);
 }
 
 async function loadInvites() {
