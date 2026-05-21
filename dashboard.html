@@ -714,27 +714,34 @@ async function checkMinecraftStatus() {
   updateRefreshIndicator('checking', 'Kontrol ediliyor...', 'mc');
   try {
     const data = await apiFetch('/api/minecraft/status');
-    const card = document.querySelector('#minecraftGrid .service-card');
-    if (!card) return;
+    const grid = document.getElementById('minecraftGrid');
+    const status = data.status === 'online' ? 'online' : 'offline';
+    const label = data.status === 'online' ? 'Çevrimiçi' : 'Çevrimdışı';
 
-    const badge = card.querySelector('.service-status-badge');
-    const dot = badge.querySelector('.service-status-dot');
-    const latencyEl = card.querySelector('.service-latency');
+    grid.innerHTML = `
+      <div class="service-card">
+        <div class="service-top">
+          <img src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/minecraft.png" alt="Minecraft">
+          <span class="service-status-badge ${status}">
+            <span class="service-status-dot ${status}"></span>
+            ${escapeHtml(label)}
+          </span>
+        </div>
+        <span class="service-name">Minecraft Sunucusu</span>
+        <div class="service-meta">
+          <span class="service-latency">${escapeHtml(data.latency || '—')}</span>
+          <span class="service-arrow">—</span>
+        </div>
+      </div>
+    `;
 
-    if (data.status === 'online') {
-      card.style.display = 'flex';
-      badge.className = 'service-status-badge online';
-      dot.className = 'service-status-dot online';
-      badge.textContent = escapeHtml('Çevrimiçi');
-      badge.prepend(dot);
-      latencyEl.textContent = escapeHtml('—');
-      updateRefreshIndicator('live', 'Canlı · ' + new Date().toLocaleTimeString('tr-TR'), 'mc');
-    } else {
-      card.style.display = 'none';
-      updateRefreshIndicator('live', 'Çevrimdışı', 'mc');
-    }
+    const dot = document.getElementById('mcRefreshDot');
+    const lbl = document.getElementById('mcRefreshLabel');
+    dot.className = 'status-dot live';
+    lbl.textContent = 'Canlı · ' + new Date().toLocaleTimeString('tr-TR');
   } catch (e) {
-    updateRefreshIndicator('checking', 'Güncellenemedi', 'mc');
+    document.getElementById('mcRefreshDot').className = 'status-dot checking';
+    document.getElementById('mcRefreshLabel').textContent = 'Güncellenemedi';
   }
 }
 
