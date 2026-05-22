@@ -42,6 +42,25 @@
     background: rgba(13,13,13,0.85);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
+    transition: padding-left 0.3s ease, padding-right 0.3s ease;
+  }
+  
+  /* Desktop nav (lg and above) */
+  @media (min-width: 1024px) {
+    nav {
+      padding-left: 3rem;
+      padding-right: 3rem;
+    }
+  }
+  
+  /* Mobile nav */
+  @media (max-width: 1023px) {
+    nav {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
   }
 
   .nav-logo {
@@ -61,6 +80,13 @@
     display: flex;
     align-items: center;
     gap: 2rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .nav-left.hidden {
+    opacity: 0;
+    transform: translateX(-20px);
+    pointer-events: none;
   }
 
   .nav-home-btn,
@@ -76,6 +102,7 @@
     transition: all 0.2s;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
   }
 
   .nav-home-btn::before,
@@ -135,6 +162,72 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    justify-content: flex-end;
+  }
+  
+  /* Hamburger menu button */
+  .mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mobile-menu-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: -1;
+  }
+  
+  .mobile-menu-btn:hover {
+    border-color: var(--accent);
+  }
+  
+  .mobile-menu-btn:hover::before {
+    opacity: 1;
+  }
+  
+  .mobile-menu-btn:hover .hamburger-icon {
+    stroke: var(--bg);
+  }
+  
+  .hamburger-icon {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2;
+    stroke: currentColor;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .hamburger-icon .line {
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-menu-btn.open .hamburger-icon .line1 {
+    transform: translateY(8px) rotate(45deg);
+  }
+  
+  .mobile-menu-btn.open .hamburger-icon .line2 {
+    opacity: 0;
+  }
+  
+  .mobile-menu-btn.open .hamburger-icon .line3 {
+    transform: translateY(-8px) rotate(-45deg);
   }
 
   .nav-register-link {
@@ -174,6 +267,69 @@
     color: var(--bg);
   }
 
+  /* Mobile dropdown menu */
+  .mobile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    border-radius: 0 0 8px 8px;
+    padding: 0.5rem 0;
+    min-width: 180px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    z-index: 101;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .mobile-dropdown.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .mobile-dropdown-item {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    padding: 0.8rem 1.2rem;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mobile-dropdown-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    width: 2px;
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+  }
+  
+  .mobile-dropdown-item:hover {
+    color: var(--text);
+  }
+  
+  .mobile-dropdown-item:hover::before {
+    transform: translateX(0);
+  }
+  
+  .mobile-dropdown-separator {
+    height: 1px;
+    background: var(--border);
+    margin: 0.25rem 1rem;
+  }
+  
   /* HERO */
   .hero {
     padding: 10rem 3rem 5rem;
@@ -504,11 +660,41 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  @media (max-width: 600px) {
-    nav { padding: 1.2rem 1.5rem; }
-    .nav-left { gap: 1rem; }
-    .nav-home-btn, .nav-programs-btn { display: none; }
-    .nav-actions { gap: 0.8rem; }
+  @media (max-width: 1023px) {
+    /* Show hamburger menu on mobile */
+    .mobile-menu-btn {
+      display: flex;
+    }
+    
+    /* Hide desktop nav on mobile */
+    .nav-left {
+      display: none;
+    }
+    
+    nav {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    
+    .nav-actions {
+      gap: 0.8rem;
+    }
+    
+    /* Show mobile dropdown menu */
+    .mobile-dropdown {
+      display: none;
+    }
+    
+    .mobile-dropdown.show {
+      display: block;
+    }
+    
+    .mobile-dropdown-item {
+      display: block;
+    }
+    
     .hero { padding: 8rem 1.5rem 4rem; }
     .updates { padding: 0 1.5rem 4rem; }
     .services { gap: 1.5rem; }
@@ -523,20 +709,35 @@
 </head>
 <body>
 
-<nav>
-  <div class="nav-left">
-    <a href="/" class="nav-logo">Fatih Durdu</a>
-    <a href="#home" class="nav-home-btn">Ana Sayfa</a>
-     <a href="programs.html" class="nav-programs-btn">Geliştirilen Programlar</a>
-  </div>
-  <div class="nav-actions">
-    <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
-    <button class="nav-login" onclick="openModal()">
-      <span>Giriş Yap</span>
-      <span>→</span>
-    </button>
-  </div>
-</nav>
+  <nav>
+    <div class="nav-left">
+      <a href="/" class="nav-logo">Fatih Durdu</a>
+      <a href="#home" class="nav-home-btn">Ana Sayfa</a>
+      <a href="programs.html" class="nav-programs-btn">Geliştirilen Programlar</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
+      <button class="nav-login" onclick="openModal()">
+        <span>Giriş Yap</span>
+        <span>→</span>
+      </button>
+    </div>
+    <!-- Mobile menu button and dropdown -->
+    <div class="mobile-menu-container">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menü">
+        <svg class="hamburger-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <line class="line line1" x1="3" y1="6" x2="21" y2="6"></line>
+          <line class="line line2" x1="3" y1="12" x2="21" y2="12"></line>
+          <line class="line line3" x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div class="mobile-dropdown" id="mobileDropdown">
+        <a href="#home" class="mobile-dropdown-item">Ana Sayfa</a>
+        <div class="mobile-dropdown-separator"></div>
+        <a href="programs.html" class="mobile-dropdown-item">Geliştirilen Programlar</a>
+      </div>
+    </div>
+  </nav>
 
 <main>
   <section class="hero">
@@ -612,7 +813,6 @@
   © 2026 Fatih Durdu · fatihdurdu.xyz
 </footer>
 
-<body>
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -723,9 +923,43 @@ function switchToLogin(e) {
   setTimeout(openModal, 200);
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeRegisterModal(); }
-});
+  // Mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileDropdown = document.getElementById('mobileDropdown');
+  const navLeft = document.querySelector('.nav-left');
+  
+  function toggleMobileMenu() {
+    const isOpen = mobileMenuBtn.classList.toggle('open');
+    mobileDropdown.classList.toggle('show', isOpen);
+    navLeft.classList.toggle('hidden', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  }
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!mobileMenuBtn.contains(e.target) && !mobileDropdown.contains(e.target)) {
+      mobileMenuBtn.classList.remove('open');
+      mobileDropdown.classList.remove('show');
+      navLeft.classList.remove('hidden');
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Close mobile menu on ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { 
+      closeModal(); 
+      closeRegisterModal();
+      mobileMenuBtn.classList.remove('open');
+      mobileDropdown.classList.remove('show');
+      navLeft.classList.remove('hidden');
+      document.body.style.overflow = '';
+    }
+  });
 
 // Giriş
 async function handleLogin() {
