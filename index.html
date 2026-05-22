@@ -19,7 +19,7 @@
     --accent-dim: rgba(200,169,110,0.12);
   }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: auto; }
 
   body {
     background: var(--bg);
@@ -50,6 +50,85 @@
     color: var(--text);
     text-decoration: none;
     letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-logo:hover {
+    color: var(--accent);
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-home-btn,
+  .nav-programs-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    padding: 0.4rem 0.9rem;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-home-btn::before,
+  .nav-programs-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: -1;
+  }
+
+  .nav-home-btn:hover,
+  .nav-programs-btn:hover {
+    color: var(--bg);
+  }
+
+  .nav-home-btn:hover::before,
+  .nav-programs-btn:hover::before {
+    opacity: 1;
+  }
+
+  .nav-home-btn:hover {
+    border-color: var(--accent);
+  }
+
+  .nav-programs-btn {
+    border-color: var(--border);
+  }
+
+  .nav-programs-btn:hover {
+    border-color: var(--accent);
+  }
+
+  .nav-programs-btn:hover .nav-programs-badge {
+    opacity: 1;
+  }
+
+  .nav-programs-badge {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.55rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
   }
 
   .nav-actions {
@@ -426,17 +505,29 @@
 
   @media (max-width: 600px) {
     nav { padding: 1.2rem 1.5rem; }
-    .nav-actions { gap: 1rem; }
+    .nav-left { gap: 1rem; }
+    .nav-home-btn, .nav-programs-btn { display: none; }
+    .nav-actions { gap: 0.8rem; }
     .hero { padding: 8rem 1.5rem 4rem; }
     .updates { padding: 0 1.5rem 4rem; }
     .services { gap: 1.5rem; }
+  }
+
+
+  /* SCROLL SPACING FOR NAV */
+  section {
+    padding-top: 6rem;
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">Fatih Durdu</a>
+  <div class="nav-left">
+    <a href="/" class="nav-logo">Fatih Durdu</a>
+    <a href="#home" class="nav-home-btn">Ana Sayfa</a>
+     <a href="programs.html" class="nav-programs-btn">Geliştirilen Programlar</a>
+  </div>
   <div class="nav-actions">
     <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
     <button class="nav-login" onclick="openModal()">
@@ -489,7 +580,6 @@
     </p>
   </section>
 
-  <hr class="divider">
 
   <section class="updates">
     <div class="updates-header">
