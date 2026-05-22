@@ -162,7 +162,8 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    justify-content: flex-end;
+    margin-left: auto;
+    flex-shrink: 0;
   }
   
   /* Hamburger menu button */
@@ -180,6 +181,7 @@
     color: var(--text);
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
   }
   
   .mobile-menu-btn::before {
@@ -680,6 +682,13 @@
     
     .nav-actions {
       gap: 0.8rem;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    
+    .mobile-menu-container {
+      flex-shrink: 0;
+      margin-left: auto;
     }
     
     /* Show mobile dropdown menu */
