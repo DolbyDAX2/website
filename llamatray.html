@@ -21,33 +21,38 @@
     .back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--accent);text-decoration:none;margin-bottom:2rem;font-family:'DM Mono',monospace;font-size:0.72rem}
     .back-link:hover{opacity:0.8}
     .back-link svg{width:16px;height:16px}
-    .main-content{padding:8rem 3rem 4rem}
-    .program-header{max-width:900px;margin:0 auto 3rem;text-align:center}
+    .main-content{padding:8rem 3rem 4rem;max-width:940px;margin:0 auto}
+    .program-header{margin-bottom:3rem;text-align:center}
     .program-badge{display:inline-block;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.4rem 0.8rem;background:var(--accent-dim);color:var(--accent);border:1px solid var(--border);border-radius:4px;margin-bottom:1.5rem}
     .program-title{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);margin-bottom:1rem;line-height:1.2}
     .program-desc{font-size:0.9rem;color:#999;line-height:1.8;max-width:700px;margin:0 auto}
     .program-image-container{max-width:600px;margin:3rem auto;overflow:hidden;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
     .program-image{width:100%;height:auto;display:block;transition:transform .5s}
     .program-image:hover{transform:scale(1.02)}
-    .no-image{background:var(--surface-elevated);padding:4rem;text-align:center;border-radius:12px}
-    .no-image svg{width:64px;height:64px;color:var(--muted);margin-bottom:1rem}
-    .no-image span{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
-    .features-section{max-width:900px;margin:4rem auto;padding:2rem}
+    .no-image{background:var(--surface-elevated);padding:4rem;text-align:center;border-radius:12px;max-width:600px;margin:3rem auto;border:1px solid var(--border)}
+    .no-image svg{width:64px;height:64px;color:var(--muted);margin-bottom:1rem;display:block;margin-left:auto;margin-right:auto}
+    .no-image span{font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;display:block}
+    .features-section{margin:4rem auto;padding:0 1rem}
     .section-header{text-align:center;margin-bottom:3rem}
     .section-title{font-family:'DM Serif Display',serif;font-size:1.8rem;margin-bottom:0.5rem}
     .section-subtitle{font-size:0.75rem;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase}
     .info-table{width:100%;font-size:0.8rem;border-collapse:collapse}
     .info-table td{padding:1rem 0;border-bottom:1px solid var(--border)}
-    .info-table td:first-child{color:var(--accent);font-family:'DM Serif Display',serif;font-size:1rem}
+    .info-table td:first-child{color:var(--accent);font-family:'DM Serif Display',serif;font-size:1rem;width:35%;vertical-align:top;padding-right:1rem}
     .info-table td:last-child{color:#aaa;line-height:1.6}
-    .tags-section{max-width:900px;margin:3rem auto;padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+    .changelog-card{margin-top:4rem;padding:1.5rem;background:var(--surface-elevated);border:1px solid var(--border);border-radius:8px}
+    .changelog-title{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--accent);margin-bottom:0.8rem}
+    .changelog-list{list-style:none;font-size:0.8rem;color:#aaa;line-height:1.7;padding-left:0}
+    .changelog-list li{margin-bottom:0.5rem;position:relative;padding-left:1.2rem}
+    .changelog-list li::before{content:'•';position:absolute;left:0;color:var(--accent)}
+    .tags-section{margin:3rem auto;padding:2rem;background:var(--surface);border:1px solid var(--border);border-radius:12px}
     .tags{display:flex;flex-wrap:wrap;gap:0.5rem}
     .tag{font-size:0.65rem;letter-spacing:0.05em;color:var(--muted);padding:0.3rem 0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:4px}
-    .repo-links{display:flex;gap:1rem;justify-content:center;margin-top:2rem}
-    .repo-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1rem;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:4px;border:1px solid var(--border);transition:all .2s;font-family:'DM Mono',monospace}
+    .repo-links{display:flex;gap:1rem;justify-content:center;margin:3rem 0 1rem}
+    .repo-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1rem;font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;border-radius:4px;border:1px solid var(--border);transition:all .2s;font-family:'DM Mono',monospace;color:var(--text)}
     .repo-btn:hover{border-color:var(--accent);color:var(--accent)}
     footer{border-top:1px solid var(--border);text-align:center;padding:2rem;font-size:0.65rem;color:var(--muted);letter-spacing:0.08em}
-    @media(max-width:768px){nav{padding:1rem 1.5rem}.nav-links{gap:1rem}.main-content{padding:7rem 1.5rem 3rem}.program-title{font-size:1.5rem}.program-image-container{margin:2rem auto}.no-image{padding:2rem}}
+    @media(max-width:768px){nav{padding:1rem 1.5rem}.nav-links{gap:1rem}.main-content{padding:7rem 1.5rem 3rem}.program-title{font-size:1.5rem}.program-image-container{margin:2rem auto}.no-image{padding:2rem}.info-table td{display:block;width:100% !important;padding:0.5rem 0}.info-table td:first-child{border-bottom:none;padding-top:1rem}}
   </style>
 </head>
 <body>
@@ -58,64 +63,78 @@
       <a href="/programs.html" class="nav-link">Programlar</a>
     </div>
   </nav>
-  <main>
+
+  <main class="main-content">
     <a href="/programs.html" class="back-link">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
       Programlar Sayfasına Dön
     </a>
-    <div class="main-content">
-      <div class="program-header">
-        <span class="program-badge">Python</span>
-        <h1 class="program-title">LlamaTray</h1>
-        <p class="program-desc">Llama.cpp tabanlı yapay zeka modelleri için PyQt6 ile geliştirilmiş hafif ve kararlı bir sistem tepsisi yönetim aracı. Linux (özellikle Arch Linux/CachyOS) için tasarlanmıştır.</p>
+
+    <div class="program-header">
+      <span class="program-badge">Python</span>
+      <h1 class="program-title">LlamaTray</h1>
+      <p class="program-desc">Llama.cpp tabanlı yapay zeka modelleri için PyQt6 ile geliştirilmiş hafif ve kararlı bir sistem tepsisi yönetim aracı. Linux (özellikle Arch Linux/CachyOS) için tasarlanmıştır.</p>
+    </div>
+
+    <div class="program-image-container">
+      <img src="llamatray.png" alt="LlamaTray" class="program-image" onerror="this.style.display='none'; document.getElementById('fallback-image').style.display='block';">
+    </div>
+    
+    <div id="fallback-image" class="no-image" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      <span>Ekran görüntüsü yüklenmedi</span>
+    </div>
+
+    <div class="features-section">
+      <div class="section-header">
+        <h2 class="section-title">Özellikler</h2>
+        <p class="section-subtitle">— programın temel yetenekleri</p>
       </div>
-      <div class="program-image-container">
-        <img src="llamatray.png" alt="LlamaTray" class="program-image">
-      </div>
-      <div class="no-image" style="display:none;">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        <span>Ekran görüntüsü yüklenmedi</span>
-      </div>
-      <div class="features-section">
-        <div class="section-header">
-          <h2 class="section-title">Özellikler</h2>
-          <p class="section-subtitle">— programın temel yetenekleri</p>
-        </div>
-        <table class="info-table">
-          <tr><td>❖ Kolay Sunucu Yönetimi</td><td>Yerel AI modellerini (llama-server) tek tıkla başlatın veya durdurun.</td></tr>
-          <tr><td>❖ Zombi Süreç Koruması</td><td>Pencere kapatıldığında arka plandaki llama-server süreci otomatik sonlandırılır. VRAM ve CPU temizlenir.</td></tr>
-          <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin (1 saniye aralıklı).</td></tr>
-          <tr><td>❖ Profil Yönetimi</td><td>Farklı model yapılandırmaları için isimli profiller kaydedin, yükleyin ve silin. Hızlı geçiş yapın.</td></tr>
-          <tr><td>❖ Gelişmiş Yapılandırma</td><td>GPU katmanları, context boyutu, port ve ek parametreleri sezgisel ayar panelinden özelleştirin.</td></tr>
-          <tr><td>❖ Web UI Entegrasyonu</td><td>Sunucu başladıktan sonra tek tıkla llama.cpp web arayüzünü tarayıcınızda açın.</td></tr>
-          <tr><td>❖ Kalıcı Ayarlar</td><td>Tüm tercihler ~/.llamatray/config.json ve ~/.llamatray/profiles.json'a otomatik kaydedilir.</td></tr>
-          <tr><td>❖ Yerel Linux Entegrasyonu</td><td>Wayland ve KDE Plasma desteği ile masaüstünüze minimum ayak iz bırakır.</td></tr>
-          <tr><td>❖ GPU Bağımsız</td><td>NVIDIA (pynvml/nvidia-smi), AMD (rocm-smi/sysfs) ve tümleşik GPU'ları destekler.</td></tr>
-          <tr><td>❖ Crash Handler</td><td>Uygulama çökse bile tepsi ikonunu ve sunucu sürecini temizleyen özel hata yakalama mekanizması.</td></tr>
-        </table>
-      </div>
-      <div class="tags-section">
-        <div class="section-header">
-          <h2 class="section-title">Teknolojiler</h2>
-          <p class="section-subtitle">— kullanılan teknolojiler ve lisans bilgisi</p>
-        </div>
-        <div class="tags">
-          <span class="tag">PyQt6</span>
-          <span class="tag">Python</span>
-          <span class="tag">Sistem Tepsisi</span>
-          <span class="tag">LLM Yönetimi</span>
-          <span class="tag">İlk Sürüm v1.0.1</span>
-          <span class="tag">MIT Lisans</span>
-        </div>
+      <table class="info-table">
+        <tr><td>❖ Kolay Sunucu Yönetimi</td><td>Yerel AI modellerini (llama-server) tek tıkla başlatın veya durdurun.</td></tr>
+        <tr><td>❖ Zombi Süreç Koruması</td><td>Pencere kapatıldığında arka plandaki llama-server süreci otomatik sonlandırılır. VRAM ve CPU temizlenir.</td></tr>
+        <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin (1 saniye aralıklı).</td></tr>
+        <tr><td>❖ Profil Yönetimi</td><td>Farklı model yapılandırmaları için isimli profiller kaydedin, yükleyin ve silin. Hızlı geçiş yapın.</td></tr>
+        <tr><td>❖ Gelişmiş Yapılandırma</td><td>GPU katmanları, context boyutu, port ve ek parametreleri sezgisel ayar panelinden özelleştirin.</td></tr>
+        <tr><td>❖ Web UI Entegrasyonu</td><td>Sunucu başladıktan sonra tek tıkla llama.cpp web arayüzünü tarayıcınızda açın.</td></tr>
+        <tr><td>❖ Kalıcı Ayarlar</td><td>Tüm tercihler ~/.llamatray/config.json ve ~/.llamatray/profiles.json'a otomatik kaydedilir.</td></tr>
+        <tr><td>❖ Yerel Linux Entegrasyonu</td><td>Wayland ve KDE Plasma desteği ile masaüstünüze minimum ayak iz bırakır.</td></tr>
+        <tr><td>❖ GPU Bağımsız</td><td>NVIDIA (pynvml/nvidia-smi), AMD (rocm-smi/sysfs) ve tümleşik GPU'ları destekler.</td></tr>
+        <tr><td>❖ Crash Handler</td><td>Uygulama çökse bile tepsi ikonunu ve sunucu sürecini temizleyen özel hata yakalama mekanizması.</td></tr>
+      </table>
+
+      <div class="changelog-card">
+        <h3 class="changelog-title">⚡ Son Güncelleme: v1.0.2</h3>
+        <ul class="changelog-list">
+          <li><b>Model Seçiminde Otomatik Config Güncellemesinin Devre Dışı Bırakılması:</b> Aktif bir profil seçiliyken farklı bir model seçildiğinde, config'in otomatik olarak güncellenmesi engellendi. Bu düzeltme, model değiştirme sırasında profillerin bozulmasını önledi.</li>
+          <li><b>"Profili Güncelle" Butonu Eklendi:</b> "💾 Profili Kaydet" ve "🗑 Profili Sil" butonları arasına yeni bir "🔄 Profili Güncelle" butonu eklendi. Bu özellik, ekranda görünen mevcut değerlerle seçili profili güncellemenizi sağlar.</li>
+          <li><b>Profil-Spesifik Context Boyutu Desteği:</b> Context boyutu combobox'ı artık profilleri yüklerken profil-spesifik custom değerleri (örn: 128000) doğru şekilde gösteriyor ve aynı zamanda hazır seçenekler listesini (16384, 32768, 65536, 131072, 262144) koruyor.</li>
+        </ul>
       </div>
     </div>
+
+    <div class="tags-section">
+      <div class="section-header">
+        <h2 class="section-title">Teknolojiler</h2>
+        <p class="section-subtitle">— kullanılan teknolojiler ve lisans bilgisi</p>
+      </div>
+      <div class="tags">
+        <span class="tag">PyQt6</span>
+        <span class="tag">Python</span>
+        <span class="tag">Sistem Tepsisi</span>
+        <span class="tag">LLM Yönetimi</span>
+        <span class="tag">v1.0.1 Kararlı</span>
+        <span class="tag">MIT Lisans</span>
+      </div>
+    </div>
+
     <div class="repo-links">
       <a href="https://github.com/DolbyDAX2/LlamaTray" target="_blank" rel="noopener noreferrer" class="repo-btn">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
         GitHub
       </a>
       <a href="https://gitea.fatihdurdu.xyz/dolbydax2/LlamaTray" target="_blank" rel="noopener noreferrer" class="repo-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 13.669L20.669 15 19.337 13.668c-.833-.75-1.937-1.102-3.168-1.102-.833 0-1.667.167-2.417.5v4.517c.75.333 1.583.5 2.417.5 2.917 0 5.083-1.5 5.083-4.083 0-1.083-.417-2.083-1.083-2.917-1.083-1.417-2.917-2.417-5.083-2.417-2.083 0-3.917 1-5.083 2.417-.667.833-1.083 1.833-1.083 2.917 0 2.583 2.167 4.083 5.083 4.083.833 0 1.667-.167 2.417-.5v-2.084l-1.417 1.417c-.417.417-1.083.667-1.75.667-.667 0-1.333-.25-1.75-.667l-4.584-4.583-1.583 1.583 4.583 4.584c-.667 1.25-1.083 2.583-1.083 4.083 0 1.417.417 2.75 1.083 3.917l1.583-1.583c-.667-1.083-1.083-2.333-1.083-3.75 0-1.417.417-2.667 1.083-3.75l4.584 4.583 1.583-1.583-4.583-4.584c.667-1.25 1.083-2.583 1.083-4.083 0-1.417-.417-2.75-1.083-3.917l-1.583 1.583c.667 1.083 1.083 2.333 1.083 3.75 0 1.417-.417 2.667-1.083 3.75l-4.584-4.583-1.583 1.583 4.583 4.584c-.667 1.25-1.083 2.583-1.083 4.083 0 1.417.417 2.75 1.083 3.917l1.583-1.583c-.667-1.083-1.083-2.333-1.083-3.75 0-1.417.417-2.667 1.083-3.75l4.584 4.583 1.583-1.583-4.583-4.584c.667-1.25 1.083-2.583 1.083-4.083 0-1.417-.417-2.75-1.083-3.917l-1.583 1.583c.667 1.083 1.083 2.333 1.083 3.75 0 1.417-.417 2.667-1.083 3.75l-4.584-4.583-1.583 1.583 4.583 4.584c-.667 1.25-1.083 2.583-1.083 4.083 0 1.417.417 2.75 1.083 3.917l1.583-1.583c-.667-1.083-1.083-2.333-1.083-3.75 0-1.417.417-2.667 1.083-3.75l4.584 4.583 1.583-1.583-4.583-4.584c.667-1.25 1.083-2.583 1.083-4.083 0-1.417-.417-2.75-1.083-3.917l-1.583 1.583c.667 1.083 1.083 2.333 1.083 3.75 0 1.417-.417 2.667-1.083 3.75l-4.584-4.583-1.583 1.583 4.583 4.584c-.667 1.25-1.083 2.583-1.083 4.083 0 1.417.417 2.75 1.083 3.917l1.583-1.583c-.667-1.083-1.083-2.333-1.083-3.75 0-1.417.417-2.667 1.083-3.75z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.002 9.004H22v1.997h-2.998zm-16.004 0h3.003v1.997H2.998zm4.004-5.002h10.001v2.002H7.002zm-3.004 9.003h16.004v2.002H3.998zm2.004 4.003h12.001v1.997H6.002z"/></svg>
         Gitea
       </a>
     </div>
