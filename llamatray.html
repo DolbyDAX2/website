@@ -104,11 +104,13 @@
       </table>
 
       <div class="changelog-card">
-        <h3 class="changelog-title">⚡ Son Güncelleme: v1.1.0</h3>
+        <h3 class="changelog-title">⚡ Son Güncelleme: v1.1.1</h3>
+        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Bu güncelleme; kritik süreç yönetimi açıklarını kapatarak, donanım izleme mekanizmalarını güçlendirerek ve kod yapısını optimize ederek uygulamanın kararlılığını ve güvenliğini önemli ölçüde artırmaktadır.</p>
         <ul class="changelog-list">
-          <li><b>🌍 Tam İngilizce Dil Desteği:</b> Uygulama arayüzü, yapılandırma ayarları, log çıktıları ve bildirimlerin tamamı tamamen İngilizceye çevrildi. Küresel kullanılabilirlik sağlandı.</li>
-          <li><b>🏗️ Kod Mimarisi Yenilenmesi (Modüler Arayüz):</b> Tek parça halindeki devasa ui.py dosyası; mantıksal alt modüllere (tabs, widgets, dialogs) bölündü. Fonksiyon bütünlüğü korunarak kodun bakımı ve geliştirilebilirliği ciddi oranda artırıldı.</li>
-          <li><b>💡 Akıllı Profil Doğrulaması:</b> Profil güncelleme işlemi öncesine aktif değişiklik kontrolü eklendi. Böylece ekranda hiçbir değişiklik yapılmadıysa profilin gereksiz yere tekrar yazılması engellendi.</li>
+          <li><b>🔒 Güvenlik İyileştirmeleri:</b> shell=True kullanımı kaldırılarak shell injection güvenlik açığı kapatıldı ve bağlam (context) boyutu için girdi taşma koruması eklendi.</li>
+          <li><b>🎯 AMD GPU ve VRAM İzleme:</b> AMD donanımları için varsayımlar yerine doğrudan dosya kontrolü (mem_info_vram_used) kullanan hassas VRAM takip yöntemi getirildi.</li>
+          <li><b>⚡ Güçlü Süreç Yönetimi:</b> PID tabanlı zombi süreç engelleme mekanizması uygulandı; böylece süreç sonlandırma işlemlerinin sadece hedeflenen instance'ı etkilemesi sağlanarak sistem kararlılığı artırıldı.</li>
+          <li><b>🛠️ Hata Yönetimi ve Kod Optimizasyonu:</b> Donanım izleme için detaylı hata günlükleri eklendi ve kod tekrarını azaltmak adına UI bileşenleri bir temel sınıfa (ResourceMonitorBase) taşınarak sürdürülebilirlik iyileştirildi.</li>
         </ul>
       </div>
     </div>
@@ -123,7 +125,7 @@
         <span class="tag">Python</span>
         <span class="tag">Sistem Tepsisi</span>
         <span class="tag">LLM Yönetimi</span>
-        <span class="tag">v1.1.0 Yeni</span>
+        <span class="tag">v1.1.1 Yeni</span>
         <span class="tag">MIT Lisans</span>
       </div>
     </div>
