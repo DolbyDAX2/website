@@ -93,24 +93,27 @@
       <table class="info-table">
         <tr><td>❖ Kolay Sunucu Yönetimi</td><td>Yerel AI modellerini (llama-server) tek tıkla başlatın veya durdurun.</td></tr>
         <tr><td>❖ Zombi Süreç Koruması</td><td>Pencere kapatıldığında arka plandaki llama-server süreci otomatik sonlandırılır. VRAM ve CPU temizlenir.</td></tr>
-        <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin (1 saniye aralıklı).</td></tr>
+        <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin (1 saniye aralıklı). RAM ve VRAM değerleri Gigabyte cinsinden de gösterilir.</td></tr>
         <tr><td>❖ Profil Yönetimi</td><td>Farklı model yapılandırmaları için isimli profiller kaydedin, yükleyin ve silin. Hızlı geçiş yapın.</td></tr>
         <tr><td>❖ Gelişmiş Yapılandırma</td><td>GPU katmanları, context boyutu, port ve ek parametreleri sezgisel ayar panelinden özelleştirin.</td></tr>
         <tr><td>❖ Web UI Entegrasyonu</td><td>Sunucu başladıktan sonra tek tıkla llama.cpp web arayüzünü tarayıcınızda açın.</td></tr>
         <tr><td>❖ Kalıcı Ayarlar</td><td>Tüm tercihler ~/.llamatray/config.json ve ~/.llamatray/profiles.json'a otomatik kaydedilir.</td></tr>
         <tr><td>❖ Yerel Linux Entegrasyonu</td><td>Wayland ve KDE Plasma desteği ile masaüstünüze minimum ayak iz bırakır.</td></tr>
-        <tr><td>❖ GPU Bağımsız</td><td>NVIDIA (pynvml/nvidia-smi), AMD (rocm-smi/sysfs) ve tümleşik GPU'ları destekler.</td></tr>
+        <tr><td>❖ GPU Bağımsız</td><td>NVIDIA (nvidia-ml-py/nvidia-smi), AMD (rocm-smi/sysfs) ve tümleşik GPU'ları destekler.</td></tr>
         <tr><td>❖ Crash Handler</td><td>Uygulama çökse bile tepsi ikonunu ve sunucu sürecini temizleyen özel hata yakalama mekanizması.</td></tr>
       </table>
 
       <div class="changelog-card">
-        <h3 class="changelog-title">⚡ Son Güncelleme: v1.1.1</h3>
-        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Bu güncelleme; kritik süreç yönetimi açıklarını kapatarak, donanım izleme mekanizmalarını güçlendirerek ve kod yapısını optimize ederek uygulamanın kararlılığını ve güvenliğini önemli ölçüde artırmaktadır.</p>
+        <h3 class="changelog-title">⚡ Son Güncelleme: v1.1.2</h3>
+        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Bu güncelleme; kritik uygulama hatalarını gidererek, ölü kodları temizleyerek, dil tutarlılığını iyileştirerek ve donanım izleme görüntüsünü geliştirerek uygulamayı daha kararlı ve kullanıcı dostu hale getirmektedir.</p>
         <ul class="changelog-list">
-          <li><b>🔒 Güvenlik İyileştirmeleri:</b> shell=True kullanımı kaldırılarak shell injection güvenlik açığı kapatıldı ve bağlam (context) boyutu için girdi taşma koruması eklendi.</li>
-          <li><b>🎯 AMD GPU ve VRAM İzleme:</b> AMD donanımları için varsayımlar yerine doğrudan dosya kontrolü (mem_info_vram_used) kullanan hassas VRAM takip yöntemi getirildi.</li>
-          <li><b>⚡ Güçlü Süreç Yönetimi:</b> PID tabanlı zombi süreç engelleme mekanizması uygulandı; böylece süreç sonlandırma işlemlerinin sadece hedeflenen instance'ı etkilemesi sağlanarak sistem kararlılığı artırıldı.</li>
-          <li><b>🛠️ Hata Yönetimi ve Kod Optimizasyonu:</b> Donanım izleme için detaylı hata günlükleri eklendi ve kod tekrarını azaltmak adına UI bileşenleri bir temel sınıfa (ResourceMonitorBase) taşınarak sürdürülebilirlik iyileştirildi.</li>
+          <li><b>🔧 Kritik Hata Düzeltmeleri:</b> Çalışmayan cleanup_tray_icon() ve cleanup_on_exit() metodları instance erişimi düzeltmesiyle onarıldı; uygulama kapanışında tepsi ikonu ve sunucu süreci güvenilir şekilde temizleniyor.</li>
+          <li><b>📁 Yapılandırma İyileştirmesi:</b> model_path değeri yapılandırma yüklemesinden sonra otomatik olarak korundu; uygulama yeniden başlatıldığında model dosyasını yeniden seçmeye gerek kalmadan doğrudan sunucu başlatılabiliyor.</li>
+          <li><b>🌐 Dil Uyumluluğu:</b> Sistem monitörü bileşenindeki etiketlerin seçili dili çalışma anında doğru şekilde yansıtması sağlandı; İngilizce modunda Türkçe sabit metinler sorunu giderildi.</li>
+          <li><b>📊 Gelişmiş İzleme Görünümü:</b> RAM ve VRAM kullanımları artık yüzde çubuklarının yanında Gigabyte cinsinden hassas değerlerle gösterilerek daha net kaynak bilgisi sunuyor.</li>
+          <li><b>⚡ Süreç Yönetimi Güçlendirmesi:</b> Diğer sistem süreçlerini yanlışlıkla sonlandırmayı önlemek için agresif killall -9 llama-server çağrısı kaldırıldı; gereksiz os.kill çağrıları temizlendi.</li>
+          <li><b>🧹 Kod Tabanı Temizliği:</b> 323 satır ölü kod (base_widget.py, main_window.py), yinelenen ikon dosyaları, kullanılmayan import'lar (ctypes, signal, atexit) ve log metodundaki ölü koşul bloğu temizlendi.</li>
+          <li><b>📦 Bağımlılık Güncellemesi:</b> pynvml yerine nvidia-ml-py paketi eklendi; ilişkili FutureWarning mesajları bastırılarak daha temiz bir konsol çıktısı sağlandı.</li>
         </ul>
       </div>
     </div>
@@ -125,7 +128,7 @@
         <span class="tag">Python</span>
         <span class="tag">Sistem Tepsisi</span>
         <span class="tag">LLM Yönetimi</span>
-        <span class="tag">v1.1.1 Yeni</span>
+        <span class="tag">v1.1.2 Yeni</span>
         <span class="tag">MIT Lisans</span>
       </div>
     </div>
