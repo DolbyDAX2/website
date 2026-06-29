@@ -288,30 +288,74 @@
     color: var(--text);
   }
 
-  .nav-user {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--accent);
-    letter-spacing: 0.08em;
+  /* User dropdown for logged-in users */
+  .user-dropdown {
+    position: relative;
+    display: inline-block;
   }
 
-  .nav-logout {
+  .nav-user-trigger {
     font-family: 'DM Mono', monospace;
     font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
+    color: var(--accent);
+    letter-spacing: 0.08em;
     background: none;
     border: 1px solid var(--border);
-    padding: 0.4rem 0.8rem;
+    padding: 0.4rem 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
-    text-decoration: none;
+    border-radius: 4px;
   }
 
-  .nav-logout:hover {
+  .nav-user-trigger:hover {
+    border-color: var(--accent);
+  }
+
+  .user-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    min-width: 160px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-radius: 6px;
+    padding: 0.4rem 0;
+    z-index: 101;
+  }
+
+  .user-dropdown:hover .user-dropdown-content {
+    display: block;
+  }
+
+  .user-dropdown-content a,
+  .user-dropdown-content button {
+    display: block;
+    padding: 0.6rem 1.2rem;
     color: var(--text);
-    border-color: var(--muted);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .user-dropdown-content a:hover,
+  .user-dropdown-content button:hover {
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .user-dropdown-content hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 0.3rem 0;
   }
 
   /* Mobile dropdown menu */
@@ -768,10 +812,8 @@
       <a href="/" class="nav-logo">Fatih Durdu</a>
       <a href="#home" class="nav-home-btn">Ana Sayfa</a>
       <a href="programs.html" class="nav-programs-btn">Geliştirilen Programlar</a>
-      <a href="dashboard.html" id="navDashboard" class="nav-home-btn" style="display:none">Dashboard</a>
-      <span id="navUsername" class="nav-user" style="display:none">—</span>
     </div>
-    <div class="nav-actions" id="navActions">
+    <div class="nav-actions">
       <a href="https://searxng.fatihdurdu.xyz/" target="_blank" class="nav-search-btn">Güvenli Arama</a>
       <span id="authButtons">
         <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
@@ -780,7 +822,15 @@
           <span>→</span>
         </button>
       </span>
-      <button id="navLogout" class="nav-logout" style="display:none" onclick="logout()">Çıkış Yap</button>
+      <!-- User dropdown shown when logged in -->
+      <div id="userDropdown" class="user-dropdown" style="display:none">
+        <button class="nav-user-trigger" id="navUserTrigger">—</button>
+        <div class="user-dropdown-content">
+          <a href="dashboard.html">Dashboard</a>
+          <hr />
+          <button onclick="logout()">Çıkış Yap</button>
+        </div>
+      </div>
     </div>
     <!-- Mobile menu button and dropdown -->
     <div class="mobile-menu-container">
@@ -954,10 +1004,9 @@ function escapeHtml(text) {
 // Giriş yapılmışsa nav'ı güncelle
 async function initNav() {
   const token = localStorage.getItem('token');
-  const dashLink = document.getElementById('navDashboard');
   const authButtons = document.getElementById('authButtons');
-  const navUsername = document.getElementById('navUsername');
-  const navLogout = document.getElementById('navLogout');
+  const userDropdown = document.getElementById('userDropdown');
+  const navUserTrigger = document.getElementById('navUserTrigger');
 
   if (!token) return;
 
@@ -977,26 +1026,25 @@ async function initNav() {
       return;
     }
 
-    // Token geçerli - nav'ı güncelle
-    if (dashLink) dashLink.style.display = 'inline-block';
+    // Token geçerli - auth butonlarını gizle, user dropdown göster
     if (authButtons) authButtons.style.display = 'none';
-    if (navLogout) navLogout.style.display = 'inline-block';
-    if (navUsername) {
-      navUsername.textContent = data.user.username;
-      navUsername.style.display = 'inline-block';
-    }
+    if (userDropdown) userDropdown.style.display = 'inline-block';
+    if (navUserTrigger) navUserTrigger.textContent = data.user.username;
+
+    // Mobile nav'a da dashboard ve çıkış ekle
+    updateMobileNav(data.user.username);
   } catch (e) {
-    // Network hatası - token'ı silme, dashboard linkini göster
-    if (dashLink) dashLink.style.display = 'inline-block';
+    // Network hatası - token'ı silme, dropdown göster
     if (authButtons) authButtons.style.display = 'none';
-    if (navLogout) navLogout.style.display = 'inline-block';
+    if (userDropdown) userDropdown.style.display = 'inline-block';
+    if (navUserTrigger) navUserTrigger.textContent = '...';
   }
 }
 
 // Mobile dropdown'a da dashboard ekle
 function updateMobileNav(username) {
   const mobileDropdown = document.getElementById('mobileDropdown');
-  // Mevcut dashboard linki varsa sil
+  // Mevcut eklemeler varsa sil
   const existingDash = document.getElementById('mobileDash');
   if (existingDash) existingDash.remove();
   const existingLogout = document.getElementById('mobileLogout');
