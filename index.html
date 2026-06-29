@@ -325,7 +325,7 @@
     z-index: 101;
   }
 
-  .user-dropdown:hover .user-dropdown-content {
+  .user-dropdown-content.show {
     display: block;
   }
 
@@ -1031,6 +1031,15 @@ async function initNav() {
     if (userDropdown) userDropdown.style.display = 'inline-block';
     if (navUserTrigger) navUserTrigger.textContent = data.user.username;
 
+    // Click ile toggle
+    if (navUserTrigger) {
+      navUserTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const content = userDropdown.querySelector('.user-dropdown-content');
+        content.classList.toggle('show');
+      });
+    }
+
     // Mobile nav'a da dashboard ve çıkış ekle
     updateMobileNav(data.user.username);
   } catch (e) {
@@ -1040,6 +1049,16 @@ async function initNav() {
     if (navUserTrigger) navUserTrigger.textContent = '...';
   }
 }
+
+// Dışarıya tıklayınca dropdown kapat
+document.addEventListener('click', function(e) {
+  const dropdowns = document.querySelectorAll('.user-dropdown-content.show');
+  dropdowns.forEach(function(d) {
+    if (!d.closest('.user-dropdown').contains(e.target)) {
+      d.classList.remove('show');
+    }
+  });
+});
 
 // Mobile dropdown'a da dashboard ekle
 function updateMobileNav(username) {
