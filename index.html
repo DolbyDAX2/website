@@ -288,6 +288,32 @@
     color: var(--text);
   }
 
+  .nav-user {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-logout {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-logout:hover {
+    color: var(--text);
+    border-color: var(--muted);
+  }
+
   /* Mobile dropdown menu */
   .mobile-dropdown {
     display: none;
@@ -743,14 +769,18 @@
       <a href="#home" class="nav-home-btn">Ana Sayfa</a>
       <a href="programs.html" class="nav-programs-btn">Geliştirilen Programlar</a>
       <a href="dashboard.html" id="navDashboard" class="nav-home-btn" style="display:none">Dashboard</a>
+      <span id="navUsername" class="nav-user" style="display:none">—</span>
     </div>
-    <div class="nav-actions">
+    <div class="nav-actions" id="navActions">
       <a href="https://searxng.fatihdurdu.xyz/" target="_blank" class="nav-search-btn">Güvenli Arama</a>
-      <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
-      <button class="nav-login" onclick="openModal()">
-        <span>Giriş Yap</span>
-        <span>→</span>
-      </button>
+      <span id="authButtons">
+        <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
+        <button class="nav-login" onclick="openModal()">
+          <span>Giriş Yap</span>
+          <span>→</span>
+        </button>
+      </span>
+      <button id="navLogout" class="nav-logout" style="display:none" onclick="logout()">Çıkış Yap</button>
     </div>
     <!-- Mobile menu button and dropdown -->
     <div class="mobile-menu-container">
@@ -921,11 +951,90 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Giriş yapılmışsa Dashboard linkini göster
-if (localStorage.getItem('token')) {
+// Giriş yapılmışsa nav'ı güncelle
+async function initNav() {
+  const token = localStorage.getItem('token');
   const dashLink = document.getElementById('navDashboard');
-  if (dashLink) dashLink.style.display = 'inline-block';
+  const authButtons = document.getElementById('authButtons');
+  const navUsername = document.getElementById('navUsername');
+  const navLogout = document.getElementById('navLogout');
+
+  if (!token) return;
+
+  try {
+    const res = await fetch(API + '/api/me', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (res.status === 401) {
+      localStorage.removeItem('token');
+      return;
+    }
+    if (res.status !== 200) return;
+
+    const data = await res.json();
+    if (data.error) {
+      localStorage.removeItem('token');
+      return;
+    }
+
+    // Token geçerli - nav'ı güncelle
+    if (dashLink) dashLink.style.display = 'inline-block';
+    if (authButtons) authButtons.style.display = 'none';
+    if (navLogout) navLogout.style.display = 'inline-block';
+    if (navUsername) {
+      navUsername.textContent = data.user.username;
+      navUsername.style.display = 'inline-block';
+    }
+  } catch (e) {
+    // Network hatası - token'ı silme, dashboard linkini göster
+    if (dashLink) dashLink.style.display = 'inline-block';
+    if (authButtons) authButtons.style.display = 'none';
+    if (navLogout) navLogout.style.display = 'inline-block';
+  }
 }
+
+// Mobile dropdown'a da dashboard ekle
+function updateMobileNav(username) {
+  const mobileDropdown = document.getElementById('mobileDropdown');
+  // Mevcut dashboard linki varsa sil
+  const existingDash = document.getElementById('mobileDash');
+  if (existingDash) existingDash.remove();
+  const existingLogout = document.getElementById('mobileLogout');
+  if (existingLogout) existingLogout.remove();
+  const existingSep = document.getElementById('mobileSep');
+  if (existingSep) existingSep.remove();
+
+  // Dashboard linki ekle
+  const dashItem = document.createElement('a');
+  dashItem.id = 'mobileDash';
+  dashItem.href = 'dashboard.html';
+  dashItem.className = 'mobile-dropdown-item';
+  dashItem.textContent = 'Dashboard';
+  mobileDropdown.appendChild(dashItem);
+
+  // Separator ekle
+  const sep = document.createElement('div');
+  sep.id = 'mobileSep';
+  sep.className = 'mobile-dropdown-separator';
+  mobileDropdown.appendChild(sep);
+
+  // Çıkış butonu ekle
+  const logoutItem = document.createElement('a');
+  logoutItem.id = 'mobileLogout';
+  logoutItem.href = '#';
+  logoutItem.className = 'mobile-dropdown-item';
+  logoutItem.textContent = 'Çıkış Yap';
+  logoutItem.onclick = (e) => { e.preventDefault(); logout(); };
+  mobileDropdown.appendChild(logoutItem);
+}
+
+function logout() {
+  localStorage.removeItem('token');
+  window.location.href = 'index.html';
+}
+
+// Sayfa yüklendiğinde nav'ı başlat
+initNav();
 
 function openModal() {
   document.getElementById('modalOverlay').classList.add('open');
