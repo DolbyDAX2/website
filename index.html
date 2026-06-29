@@ -269,6 +269,25 @@
     color: var(--bg);
   }
 
+  .nav-search-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s;
+    margin-right: 1rem;
+  }
+
+  .nav-search-btn:hover {
+    border-color: var(--muted);
+    color: var(--text);
+  }
+
   /* Mobile dropdown menu */
   .mobile-dropdown {
     display: none;
@@ -723,8 +742,10 @@
       <a href="/" class="nav-logo">Fatih Durdu</a>
       <a href="#home" class="nav-home-btn">Ana Sayfa</a>
       <a href="programs.html" class="nav-programs-btn">Geliştirilen Programlar</a>
+      <a href="dashboard.html" id="navDashboard" class="nav-home-btn" style="display:none">Dashboard</a>
     </div>
     <div class="nav-actions">
+      <a href="https://searxng.fatihdurdu.xyz/" target="_blank" class="nav-search-btn">Güvenli Arama</a>
       <a href="#" class="nav-register-link" onclick="openRegisterModal(); return false;">Kaydol</a>
       <button class="nav-login" onclick="openModal()">
         <span>Giriş Yap</span>
@@ -798,6 +819,10 @@
       <span class="updates-count">— son notlar</span>
     </div>
     <ul class="update-list">
+      <li class="update-item">
+        <span class="update-date">Haziran 2026</span>
+        <span class="update-text"><strong>SearXNG arama motoru eklendi.</strong> https://searxng.fatihdurdu.xyz/ adresine yeni bir SearXNG arama motoru entegre edildi.</span>
+      </li>
       <li class="update-item">
         <span class="update-date">May 2026</span>
         <span class="update-text"><strong>Website programlar eklendi.</strong> Geliştirilen programlar (index.html, programs.html, llamatray.html) siteye eklendi.</span>
@@ -896,9 +921,10 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-// Zaten giriş yapılmışsa dashboard'a yönlendir
+// Giriş yapılmışsa Dashboard linkini göster
 if (localStorage.getItem('token')) {
-  window.location.href = '/dashboard.html';
+  const dashLink = document.getElementById('navDashboard');
+  if (dashLink) dashLink.style.display = 'inline-block';
 }
 
 function openModal() {

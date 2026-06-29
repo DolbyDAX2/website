@@ -61,6 +61,43 @@
   }
   .nav-logout:hover { color: var(--text); }
 
+  .user-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    min-width: 160px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    z-index: 101;
+  }
+
+  .dropdown-content a {
+    display: block;
+    padding: 0.7rem 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    transition: background 0.2s;
+  }
+
+  .dropdown-content a:hover {
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .user-dropdown:hover .dropdown-content {
+    display: block;
+  }
+
   /* MAIN */
   main {
     padding: 7rem 3rem 4rem;
@@ -563,8 +600,15 @@
 <nav>
   <a href="/" class="nav-logo">Fatih Durdu</a>
   <div class="nav-right">
-    <span class="nav-user">Merhaba, <span id="navUsername">—</span></span>
-    <button class="nav-logout" onclick="logout()">Çıkış →</button>
+    <div class="user-dropdown">
+      <span class="nav-user">Merhaba, <span id="navUsername">—</span>▾</span>
+      <div class="dropdown-content">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="/">Ana Sayfa</a>
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 0.5rem 0;"></a>
+        <button class="nav-logout" onclick="logout()" style="width: 100%; text-align: left; padding: 0.7rem 1.2rem; border: none; background: none; cursor: pointer;">Çıkış Yap</button>
+      </div>
+    </div>
   </div>
 </nav>
 
