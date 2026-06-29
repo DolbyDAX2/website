@@ -598,15 +598,15 @@
 </head>
 <body>
 <nav>
-  <a href="/index.html" class="nav-logo">Fatih Durdu</a>
+  <a href="index.html" class="nav-logo">Fatih Durdu</a>
   <div class="nav-right">
     <div class="user-dropdown">
       <span class="nav-user">Merhaba, <span id="navUsername">—</span>▾</span>
       <div class="dropdown-content">
         <a href="dashboard.html">Dashboard</a>
-        <a href="/">Ana Sayfa</a>
+        <a href="index.html">Ana Sayfa</a>
         <hr style="border: 0; border-top: 1px solid var(--border); margin: 0.5rem 0;"></a>
-        <button class="nav-logout" onclick="logout()" style="width: 100%; text-align: left; padding: 0.7rem 1.2rem; border: none; background: none; cursor: pointer;">Çıkış Yap</button>
+        <button class="nav-logout" onclick="logout(true)" style="width: 100%; text-align: left; padding: 0.7rem 1.2rem; border: none; background: none; cursor: pointer;">Çıkış Yap</button>
       </div>
     </div>
   </div>
@@ -729,9 +729,11 @@ function escapeHtml(text) {
 
 function getToken() { return localStorage.getItem('token'); }
 
-function logout() {
-  localStorage.removeItem('token');
-  window.location.href = '/';
+function logout(force) {
+  if (force) {
+    localStorage.removeItem('token');
+    window.location.href = 'index.html';
+  }
 }
 
 async function apiFetch(path, opts = {}) {
@@ -847,10 +849,26 @@ async function checkServiceStatuses() {
 }
 
 async function loadDashboard() {
-  if (!getToken()) { window.location.href = '/'; return; }
+  if (!getToken()) { window.location.href = 'index.html'; return; }
 
-  const data = await apiFetch('/api/me');
-  if (data.error) { logout(); return; }
+  let data;
+  try {
+    const res = await fetch(API + '/api/me', {
+      headers: { 'Authorization': 'Bearer ' + getToken() }
+    });
+    if (res.status === 401) { logout(true); return; }
+    if (res.status !== 200) {
+      // Sunucu geçici olarak yanıt vermiyor, dashboard'u boş göster
+      document.getElementById('pageRole').textContent = 'Oturum doğrulanıyor...';
+      return;
+    }
+    data = await res.json();
+    if (data.error) { logout(true); return; }
+  } catch (e) {
+    // Network hatası - token'ı silme, sadece yükleme iptal et
+    document.getElementById('pageRole').textContent = 'Sunucuya bağlanılamıyor...';
+    return;
+  }
 
   const { user, services } = data;
 

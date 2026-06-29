@@ -1014,7 +1014,7 @@ async function handleLogin() {
     const data = await res.json();
     if (data.error) { errEl.textContent = escapeHtml(data.error); return; }
     localStorage.setItem('token', data.token);
-    window.location.href = '/dashboard.html';
+    window.location.href = 'dashboard.html';
   } catch (e) {
     errEl.textContent = 'Sunucuya bağlanılamadı.';
   }
