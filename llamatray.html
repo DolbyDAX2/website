@@ -111,25 +111,21 @@
       </div>
       <table class="info-table">
         <tr><td>❖ Kolay Sunucu Yönetimi</td><td>Yerel AI modellerini (llama-server) tek tıkla başlatın veya durdurun.</td></tr>
-        <tr><td>❖ Zombi Süreç Koruması</td><td>Pencere kapatıldığında arka plandaki llama-server süreci otomatik sonlandırılır. VRAM ve CPU temizlenir.</td></tr>
         <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin (1 saniye aralıklı). RAM ve VRAM değerleri Gigabyte cinsinden de gösterilir.</td></tr>
         <tr><td>❖ Profil Yönetimi</td><td>Farklı model yapılandırmaları için isimli profiller kaydedin, yükleyin ve silin. Hızlı geçiş yapın.</td></tr>
         <tr><td>❖ Gelişmiş Yapılandırma</td><td>GPU katmanları, context boyutu, port ve ek parametreleri sezgisel ayar panelinden özelleştirin.</td></tr>
         <tr><td>❖ Web UI Entegrasyonu</td><td>Sunucu başladıktan sonra tek tıkla llama.cpp web arayüzünü tarayıcınızda açın.</td></tr>
-        <tr><td>❖ Kalıcı Ayarlar</td><td>Tüm tercihler ~/.llamatray/config.json ve ~/.llamatray/profiles.json'a otomatik kaydedilir.</td></tr>
         <tr><td>❖ Yerel Linux Entegrasyonu</td><td>Wayland ve KDE Plasma desteği ile masaüstünüze minimum ayak iz bırakır.</td></tr>
-        <tr><td>❖ GPU Bağımsız</td><td>NVIDIA (nvidia-ml-py/nvidia-smi), AMD (rocm-smi/sysfs) ve tümleşik GPU'ları destekler.</td></tr>
-        <tr><td>❖ Crash Handler</td><td>Uygulama çökse bile tepsi ikonunu ve sunucu sürecini temizleyen özel hata yakalama mekanizması.</td></tr>
+        <tr><td>❖ Sampler Presetleri</td><td>Gelişmiş Ayarlar panelinde Nötr, Dengeli, Yaratıcı ve Kesin olmak üzere dört hazır preset. Tek tıkla sampler parametrelerini otomatik yapılandırın.</td></tr>
+        <tr><td>❖ HuggingFace Model İndirici</td><td>Uygulamadan çıkmadan doğrudan HuggingFace'de GGUF modeli arayın, dosyaları listeleyin ve ilerleme çubuğu ile indirin. İndirmeler istenen anda iptal edilebilir.</td></tr>
       </table>
 
       <div class="changelog-card">
-        <h3 class="changelog-title">⚡ Son Güncelleme: v1.2.1</h3>
-        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Kod sürdürülebilirliği iyileştirmelerine, güncelliğini yitirmiş dosyaların kaldırılmasına ve v1.2.0 sonrası tespit edilen hata düzeltmelerine odaklanan güncelleme.</p>
+        <h3 class="changelog-title">⚡ Son Güncelleme: v1.3.0</h3>
+        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Bu sürüm iki önemli kullanıcı özelliği sunar: hızlı parametre yapılandırması için sampler preset sistemi ve arama özelliğine sahip yerleşik HuggingFace model indirici. Artık model bulmak ve indirmek için uygulamadan çıkmaya gerek kalmıyor.</p>
         <ul class="changelog-list">
-          <li><b>🧩 Modüler UI Yenileme:</b> Sürdürülebilirliği artırmak için ui.py dosyası ayrı bileşen dosyalarına bölündü: command_preview.py (başlatma komutu önizleme), model_selector.py (model ve mmproj dosya seçimi), server_controls.py (sunucu başlatma/durdurma kontrolleri).</li>
-          <li><b>📦 arch-package/ Kaldırıldı:</b> AUR paketi (llamatray-git) Arch tabanlı sistemler için dağıtımı otomatik olarak yönettiğinden, önceden derlenmiş Arch Linux paket klasörü kaldırıldı.</li>
-          <li><b>🔧 Launcher Düzeltmesi:</b> install.sh tarafından oluşturulan launcher script'e cd "$PROJECT_DIR" satırı eklendi; uygulama menüsünden LlamaTray açılırken çalışma dizininin hatalı ayarlanmasından kaynaklanan sorun giderildi.</li>
-          <li><b>📋 Log Çıktısı Düzeltmesi:</b> Modüler yenileme sırasında kaybolan sunucu başlatma log satırları geri getirildi.</li>
+          <li><b>🎛️ Sampler Presetleri:</b> Gelişmiş Ayarlar paneline yeni "Sampler Preset" dropdown'ı eklendi. Nötr, Dengeli, Yaratıcı ve Kesin presetleri ile ilgili sampler değerlerini tek tıkla otomatik doldurun. Ek parametreler alanı manuel düzenlendiğinde preset otomatik olarak "Özel"'e geçer.</li>
+          <li><b>📥 HuggingFace Model İndirici:</b> "Model Seç" butonunun yanına yeni "HF'den İndir" butonu eklendi. Açılan dialog üzerinden doğrudan HuggingFace'de GGUF modeli arayın, herhangi bir repodaki mevcut dosyaları listeleyin, indirme klasörü seçin ve ilerleme çubuğu ile süreci takip edin. İndirmeler istenen anda iptal edilebilir.</li>
         </ul>
       </div>
     </div>
@@ -144,7 +140,7 @@
         <span class="tag">Python</span>
         <span class="tag">Sistem Tepsisi</span>
         <span class="tag">LLM Yönetimi</span>
-        <span class="tag">v1.2.1 Yeni</span>
+        <span class="tag">v1.3.0 Yeni</span>
         <span class="tag">MIT Lisans</span>
       </div>
     </div>
