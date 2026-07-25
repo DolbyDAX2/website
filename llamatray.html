@@ -92,7 +92,7 @@
     <div class="program-header">
       <span class="program-badge">Python</span>
       <h1 class="program-title">LlamaTray</h1>
-      <p class="program-desc">Llama.cpp tabanlı yapay zeka modelleri için PyQt6 ile geliştirilmiş hafif ve kararlı bir sistem tepsisi yönetim aracı. Linux (özellikle Arch Linux/CachyOS) için tasarlanmıştır.</p>
+      <p class="program-desc">Llama.cpp tabanlı yapay zeka modelleri için PyQt6 ile geliştirilmiş hafif ve kararlı bir sistem tepsisi yönetim aracı. Tek Model ve Router modlarıyla Linux üzerinde yerel GGUF modellerini çalıştırmayı ve yönetmeyi kolaylaştırır.</p>
     </div>
 
     <div class="program-image-container">
@@ -110,22 +110,29 @@
         <p class="section-subtitle">— programın temel yetenekleri</p>
       </div>
       <table class="info-table">
+        <tr><td>❖ Tek Model ve Router Modları</td><td>Tek bir GGUF modelini doğrudan çalıştırın veya bir model klasörünü llama-server Router olarak yönetin.</td></tr>
+        <tr><td>❖ Dinamik Model Yönetimi</td><td>Router modellerinin Yüklü, Boşta, Yükleniyor ve Bilinmiyor durumlarını görüntüleyin; modelleri sunucuyu yeniden başlatmadan yükleyin veya boşaltın.</td></tr>
+        <tr><td>❖ Sekmeli Arayüz</td><td>Ana, Ayarlar ve Profiller sekmeleriyle sunucu kontrollerine, yapılandırmaya ve profil yönetimine düzenli şekilde erişin.</td></tr>
         <tr><td>❖ Kolay Sunucu Yönetimi</td><td>Yerel AI modellerini (llama-server) tek tıkla başlatın veya durdurun.</td></tr>
-        <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin (1 saniye aralıklı). RAM ve VRAM değerleri Gigabyte cinsinden de gösterilir.</td></tr>
-        <tr><td>❖ Profil Yönetimi</td><td>Farklı model yapılandırmaları için isimli profiller kaydedin, yükleyin ve silin. Hızlı geçiş yapın.</td></tr>
-        <tr><td>❖ Gelişmiş Yapılandırma</td><td>GPU katmanları, context boyutu, port ve ek parametreleri sezgisel ayar panelinden özelleştirin.</td></tr>
+        <tr><td>❖ Gerçek Zamanlı Kaynak İzleme</td><td>CPU, RAM, GPU ve VRAM kullanımını görsel ilerleme çubuklarıyla anlık takip edin. NVIDIA ve AMD izleme arayüzleri desteklenir.</td></tr>
+        <tr><td>❖ Kalıcı Profiller ve Ayarlar</td><td>Tek Model ve Router yapılandırmalarını isimli profiller olarak kaydedin, yükleyin, güncelleyin ve silin.</td></tr>
+        <tr><td>❖ Gelişmiş Yapılandırma</td><td>GPU katmanları, context boyutu, port, sampler presetleri, mmproj ve ek parametreleri özelleştirin; oluşturulan komutu başlamadan önce inceleyin.</td></tr>
         <tr><td>❖ Web UI Entegrasyonu</td><td>Sunucu başladıktan sonra tek tıkla llama.cpp web arayüzünü tarayıcınızda açın.</td></tr>
         <tr><td>❖ Yerel Linux Entegrasyonu</td><td>Wayland ve KDE Plasma desteği ile masaüstünüze minimum ayak iz bırakır.</td></tr>
-        <tr><td>❖ Sampler Presetleri</td><td>Gelişmiş Ayarlar panelinde Nötr, Dengeli, Yaratıcı ve Kesin olmak üzere dört hazır preset. Tek tıkla sampler parametrelerini otomatik yapılandırın.</td></tr>
-        <tr><td>❖ HuggingFace Model İndirici</td><td>Uygulamadan çıkmadan doğrudan HuggingFace'de GGUF modeli arayın, dosyaları listeleyin ve ilerleme çubuğu ile indirin. İndirmeler istenen anda iptal edilebilir.</td></tr>
+        <tr><td>❖ Hızlı HuggingFace İndirici</td><td>GGUF modellerini arayın, HuggingFace Tree API ile dosyaları ve gerçek boyutlarını hızla listeleyin, indirme ilerlemesini takip edin. Router modunda model klasörü otomatik seçilir.</td></tr>
       </table>
 
       <div class="changelog-card">
-        <h3 class="changelog-title">⚡ Son Güncelleme: v1.3.0</h3>
-        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Bu sürüm iki önemli kullanıcı özelliği sunar: hızlı parametre yapılandırması için sampler preset sistemi ve arama özelliğine sahip yerleşik HuggingFace model indirici. Artık model bulmak ve indirmek için uygulamadan çıkmaya gerek kalmıyor.</p>
+        <h3 class="changelog-title">⚡ Son Güncelleme: v1.4.0</h3>
+        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">Bu sürüm, sekmeli arayüz ve kapsamlı llama-server Router Modu desteğini sunar. Artık bir model klasöründeki birden fazla GGUF modelini tek sunucu üzerinden yönetebilir, modelleri dinamik olarak yükleyip boşaltabilir ve yeni modelleri optimize edilmiş HuggingFace indiriciyle doğrudan Router klasörüne indirebilirsiniz.</p>
         <ul class="changelog-list">
-          <li><b>🎛️ Sampler Presetleri:</b> Gelişmiş Ayarlar paneline yeni "Sampler Preset" dropdown'ı eklendi. Nötr, Dengeli, Yaratıcı ve Kesin presetleri ile ilgili sampler değerlerini tek tıkla otomatik doldurun. Ek parametreler alanı manuel düzenlendiğinde preset otomatik olarak "Özel"'e geçer.</li>
-          <li><b>📥 HuggingFace Model İndirici:</b> "Model Seç" butonunun yanına yeni "HF'den İndir" butonu eklendi. Açılan dialog üzerinden doğrudan HuggingFace'de GGUF modeli arayın, herhangi bir repodaki mevcut dosyaları listeleyin, indirme klasörü seçin ve ilerleme çubuğu ile süreci takip edin. İndirmeler istenen anda iptal edilebilir.</li>
+          <li><b>🗂️ Sekmeli Arayüz:</b> Sunucu kontrolleri, gelişmiş ayarlar ve profil yönetimi Ana, Ayarlar ve Profiller sekmelerine ayrıldı. Ayar bölümleri başlıklarına tıklanarak daraltılabilir.</li>
+          <li><b>🔀 Router Modu:</b> Model klasörü, otomatik model yükleme, Jinja, GPU katmanları, context boyutu, port ve ek parametre seçenekleriyle Tek Model ve Router Modu arasında geçiş desteği eklendi.</li>
+          <li><b>📦 Dinamik Model Yönetimi:</b> Router modelleri okunabilir durum bilgileriyle listelenir ve uygulama içinden, sunucuyu yeniden başlatmadan yüklenip boşaltılabilir.</li>
+          <li><b>💾 Router Profil Desteği:</b> Router modu ve ilgili tüm ayarlar mevcut profil sistemiyle kaydedilebilir ve geri yüklenebilir.</li>
+          <li><b>⚡ Hızlandırılmış HF İndirici:</b> Dosya adları ve gerçek boyutları HuggingFace Tree API üzerinden toplu alınarak repo listeleme süresi önemli ölçüde kısaltıldı.</li>
+          <li><b>📥 HF Router Entegrasyonu:</b> "HF'den İndir" Router Modunda kullanılabilir kalır, model klasörünü otomatik seçer ve indirme tamamlandığında çalışan Router listesini yeniler.</li>
+          <li><b>🌐 Merkezi Sürüm Yönetimi:</b> Ana pencere, Hakkında ekranı ve kurulum betiği artık aynı merkezi sürüm bilgisini kullanır.</li>
         </ul>
       </div>
     </div>
@@ -140,7 +147,9 @@
         <span class="tag">Python</span>
         <span class="tag">Sistem Tepsisi</span>
         <span class="tag">LLM Yönetimi</span>
-        <span class="tag">v1.3.0 Yeni</span>
+        <span class="tag">Router Modu</span>
+        <span class="tag">HuggingFace API</span>
+        <span class="tag">v1.4.0 Yeni</span>
         <span class="tag">MIT Lisans</span>
       </div>
     </div>

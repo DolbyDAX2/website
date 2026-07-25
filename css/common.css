@@ -54,6 +54,7 @@ nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; a
 .user-dropdown-content hr { border: 0; border-top: 1px solid var(--border); margin: 0.3rem 0; }
 
 /* Nav auth buttons */
+.nav-auth-buttons { display: flex; align-items: center; gap: 1rem; white-space: nowrap; }
 .nav-register-link { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: color 0.2s; }
 .nav-register-link:hover { color: var(--accent); }
 .nav-login { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem; border: 1px solid var(--accent); color: var(--accent); font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; background: transparent; transition: background 0.2s, color 0.2s; }
