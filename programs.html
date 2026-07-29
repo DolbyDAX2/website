@@ -39,8 +39,11 @@
   .program-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;opacity:0;animation:fadeUp .6s ease forwards}
   .program-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 20px 60px rgba(0,0,0,0.5)}
   .program-card:nth-child(1){animation-delay:0.1s}
+  .program-card:nth-child(2){animation-delay:0.2s}
   .program-header{position:relative;height:220px;background:var(--surface-elevated);overflow:hidden}
   .program-header img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .program-header.program-icon-header{background:radial-gradient(circle at 50% 42%,rgba(200,169,110,0.16),transparent 46%),linear-gradient(135deg,#17172b,#0c0c18)}
+  .program-header.program-icon-header img{object-fit:contain;padding:2.1rem}
   .program-card:hover .program-header img{transform:scale(1.05)}
   .program-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 0%,rgba(13,13,13,0.3) 50%,rgba(13,13,13,0.8) 100%)}
   .program-badge{position:absolute;top:1rem;right:1rem;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.4rem 0.8rem;background:var(--accent-dim);color:var(--accent);border:1px solid var(--border);border-radius:4px}
@@ -133,6 +136,29 @@
           <div class="program-actions">
             <a href="https://github.com/DolbyDAX2/LlamaTray" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a>
             <a href="/llamatray.html" class="btn btn-secondary">Detaylar</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="program-card" data-program="linux-bannerlord-mod-manager">
+        <div class="program-header program-icon-header">
+          <img src="bannerlord-mod-manager.png" alt="Linux Bannerlord Mod Manager uygulama ikonu">
+          <div class="program-overlay"></div>
+          <span class="program-badge">Linux · Electron</span>
+        </div>
+        <div class="program-body">
+          <h3 class="program-title">Linux Bannerlord Mod Manager</h3>
+          <p class="program-desc">Mount &amp; Blade II: Bannerlord için Linux odaklı, modern ve güvenli mod yöneticisi. Nexus Mods üzerinde arama yapın, resmî NXM akışıyla mod kurun ve uygulamanın yönettiği modların güncellemelerini takip edin.</p>
+          <div class="program-features">
+            <span class="program-feature">Electron · React</span>
+            <span class="program-feature">Nexus Mods · NXM</span>
+            <span class="program-feature">Güvenli Mod Kurulumu</span>
+            <span class="program-feature">AppImage</span>
+          </div>
+          <div class="program-meta"><span>● v1.0.0</span><span>• Linux x86_64</span></div>
+          <div class="program-actions">
+            <a href="https://github.com/DolbyDAX2/bannerlord-mod-manager" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub</a>
+            <a href="https://github.com/DolbyDAX2/bannerlord-mod-manager/releases/download/v1.0.0/Bannerlord-Mod-Manager-1.0.0.AppImage" class="btn btn-secondary">AppImage İndir</a>
           </div>
         </div>
       </article>
