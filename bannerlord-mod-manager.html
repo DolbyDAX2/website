@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Linux için Nexus Mods entegrasyonlu Mount & Blade II: Bannerlord mod yöneticisi.">
+  <title>Linux Bannerlord Mod Manager - Fatih Durdu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    nav{padding:1.2rem 3rem}.nav-links{gap:2rem}
+    .main-content{padding:8rem 3rem 4rem;max-width:1040px;margin:0 auto}
+    .back-link{display:inline-flex;align-items:center;gap:.5rem;color:var(--accent);text-decoration:none;margin-bottom:2.5rem;font-size:.72rem}
+    .back-link:hover{opacity:.8}.back-link svg{width:16px;height:16px}
+    .hero{display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:center;gap:4rem;padding:1rem 0 4rem}
+    .program-badge{display:inline-block;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .8rem;background:var(--accent-dim);color:var(--accent);border:1px solid var(--border);border-radius:4px;margin-bottom:1.5rem}
+    .program-title{font-family:'DM Serif Display',serif;font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.05;margin-bottom:1.4rem}
+    .program-title em{font-weight:400;color:var(--accent)}
+    .program-desc{font-size:.86rem;color:#999;line-height:1.85;max-width:680px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+    .cta{display:inline-flex;align-items:center;justify-content:center;padding:.75rem 1.1rem;font:400 .68rem 'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:.2s}
+    .cta-primary{background:var(--accent);color:var(--bg);border:1px solid var(--accent)}.cta-primary:hover{background:transparent;color:var(--accent)}
+    .cta-secondary{color:var(--text);border:1px solid var(--border)}.cta-secondary:hover{border-color:var(--accent);color:var(--accent)}
+    .icon-stage{aspect-ratio:1;border:1px solid var(--border);border-radius:22px;background:radial-gradient(circle at 50% 40%,rgba(200,169,110,.18),transparent 48%),linear-gradient(135deg,#17172b,#0c0c18);display:flex;align-items:center;justify-content:center;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+    .icon-stage img{width:72%;height:72%;object-fit:contain;filter:drop-shadow(0 14px 20px rgba(0,0,0,.35))}
+    .section{padding:4rem 0;border-top:1px solid var(--border)}
+    .section-header{text-align:center;margin-bottom:2.8rem}.section-title{font-family:'DM Serif Display',serif;font-size:1.9rem;margin-bottom:.5rem}.section-subtitle{font-size:.7rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+    .feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:.2s}.feature-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+    .feature-card h3{font-family:'DM Serif Display',serif;color:var(--accent);font-size:1.08rem;margin-bottom:.65rem}.feature-card p{font-size:.74rem;color:#999;line-height:1.75}
+    .steps{counter-reset:steps;display:grid;gap:1rem;max-width:820px;margin:0 auto}.step{counter-increment:steps;display:grid;grid-template-columns:42px 1fr;gap:1rem;align-items:start;background:var(--surface);border:1px solid var(--border);padding:1.2rem;border-radius:8px}.step::before{content:counter(steps);width:34px;height:34px;border:1px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:.72rem}.step h3{font-size:.82rem;font-weight:400;margin-bottom:.35rem}.step p{font-size:.7rem;color:#888;line-height:1.65}
+    .install-box{margin-top:2rem;background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.2rem;overflow:auto}.install-box code{font:400 .72rem 'DM Mono',monospace;color:#aaa;white-space:pre}
+    .info-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.info-card{padding:1.7rem;background:var(--surface);border:1px solid var(--border);border-radius:10px}.info-card h3{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--accent);margin-bottom:.8rem}.info-card p,.info-card li{font-size:.73rem;color:#999;line-height:1.75}.info-card ul{list-style:none}.info-card li{position:relative;padding-left:1rem;margin:.35rem 0}.info-card li::before{content:'→';position:absolute;left:0;color:var(--accent)}
+    .tags{display:flex;justify-content:center;flex-wrap:wrap;gap:.55rem}.tag{font-size:.64rem;color:var(--muted);padding:.35rem .65rem;background:var(--surface);border:1px solid var(--border);border-radius:4px}
+    .repo-links{display:flex;justify-content:center;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+    footer{border-top:1px solid var(--border);text-align:center;padding:2rem;font-size:.65rem;color:var(--muted);letter-spacing:.08em}
+    @media(max-width:768px){nav{padding:1rem 1.5rem}.nav-links{gap:1rem}.main-content{padding:7rem 1.5rem 3rem}.hero{grid-template-columns:1fr;gap:2.5rem}.icon-stage{width:min(260px,80vw);margin:0 auto;grid-row:1}.hero-copy{text-align:center}.program-desc{margin:0 auto}.hero-actions{justify-content:center}.feature-grid,.info-row{grid-template-columns:1fr}.section{padding:3rem 0}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/" class="nav-logo">Fatih Durdu</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" class="nav-link">Ana Sayfa</a>
+        <a href="/programs.html" class="nav-link">Programlar</a>
+      </div>
+      <div id="userDropdown" class="user-dropdown" style="display:none">
+        <button class="nav-user-trigger" id="navUserTrigger">—</button>
+        <div class="user-dropdown-content"><a href="dashboard.html">Dashboard</a><hr><button onclick="logout()">Çıkış Yap</button></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <a href="/programs.html" class="back-link">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      Programlar Sayfasına Dön
+    </a>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="program-badge">Linux · Electron · v1.0.0</span>
+        <h1 class="program-title">Linux Bannerlord<br><em>Mod Manager</em></h1>
+        <p class="program-desc">Mount &amp; Blade II: Bannerlord için Linux kullanıcılarına özel, Nexus Mods entegrasyonlu modern mod yöneticisi. Modları keşfedin, güvenli şekilde kurun ve güncellemeleri tek uygulamadan takip edin.</p>
+        <div class="hero-actions">
+          <a href="https://github.com/DolbyDAX2/bannerlord-mod-manager/releases/download/v1.0.0/Bannerlord-Mod-Manager-1.0.0.AppImage" class="cta cta-primary">AppImage İndir</a>
+          <a href="https://github.com/DolbyDAX2/bannerlord-mod-manager" target="_blank" rel="noopener noreferrer" class="cta cta-secondary">Kaynak Kod</a>
+        </div>
+      </div>
+      <div class="icon-stage"><img src="bannerlord-mod-manager.png" alt="Linux Bannerlord Mod Manager ikonu"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-header"><h2 class="section-title">Özellikler</h2><p class="section-subtitle">— Linux üzerinde güvenli mod yönetimi</p></div>
+      <div class="feature-grid">
+        <article class="feature-card"><h3>Nexus Mods Arama</h3><p>Yeni, güncellenen, trend ve popüler modları tam metin arama ve sayfalama desteğiyle doğrudan uygulamada keşfedin.</p></article>
+        <article class="feature-card"><h3>Resmî NXM Akışı</h3><p>Standart Nexus hesaplarında Mod Manager Download ve Slow Download akışını kullanarak modları otomatik kurun.</p></article>
+        <article class="feature-card"><h3>Akıllı Güncelleme Takibi</h3><p>Sürüm metninin yanında Nexus File ID ve seçilen MAIN dosya ailesini izleyerek doğru güncellemeleri tespit edin.</p></article>
+        <article class="feature-card"><h3>Çevirileri Koruyan Güncelleme</h3><p>Yeni sürümü mevcut klasörle güvenli biçimde birleştirirken Türkçe yamalarınızı ve kullanıcı dosyalarınızı koruyun.</p></article>
+        <article class="feature-card"><h3>Manuel Arşiv Kurulumu</h3><p>ZIP, 7Z ve RAR arşivlerini güvenli yol doğrulaması ve gerçek SubModule.xml kökü tespitiyle kurun.</p></article>
+        <article class="feature-card"><h3>Resmî Modül Koruması</h3><p>Native, Sandbox, StoryMode ve diğer oyun modüllerinin silinmesini, kapatılmasını veya üzerine yazılmasını engelleyin.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header"><h2 class="section-title">Kullanım</h2><p class="section-subtitle">— AppImage ile kurulum gerektirmez</p></div>
+      <div class="steps">
+        <div class="step"><div><h3>AppImage dosyasını indirin</h3><p>GitHub Release sayfasındaki x86_64 AppImage paketini bilgisayarınıza kaydedin.</p></div></div>
+        <div class="step"><div><h3>Çalıştırma izni verin</h3><p>Dosya özelliklerinden “Çalıştırılabilir” seçeneğini açın veya aşağıdaki chmod komutunu kullanın.</p></div></div>
+        <div class="step"><div><h3>Bannerlord ve Nexus ayarlarını yapın</h3><p>Modules klasörünü seçin, kişisel Nexus API anahtarınızı doğrulayın ve modları yönetmeye başlayın.</p></div></div>
+      </div>
+      <div class="install-box"><code>chmod +x Bannerlord-Mod-Manager-1.0.0.AppImage
+./Bannerlord-Mod-Manager-1.0.0.AppImage</code></div>
+    </section>
+
+    <section class="section">
+      <div class="info-row">
+        <article class="info-card">
+          <h3>Güvenlik</h3>
+          <ul><li>Electron sandbox ve context isolation</li><li>HTML/BBCode açıklama temizleme</li><li>Arşiv path traversal koruması</li><li>Yerel API anahtarı için 0600 dosya izni</li></ul>
+        </article>
+        <article class="info-card">
+          <h3>Nexus Politikası</h3>
+          <p>Uygulama scraping yapmaz ve premium kısıtlamalarını aşmaz. Nexus REST/GraphQL API’lerini ve standart hesaplar için resmî NXM onay akışını kullanır.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header"><h2 class="section-title">Teknolojiler</h2><p class="section-subtitle">— açık kaynak ve Linux odaklı</p></div>
+      <div class="tags"><span class="tag">Electron</span><span class="tag">React</span><span class="tag">TailwindCSS</span><span class="tag">Vite</span><span class="tag">Nexus API</span><span class="tag">AppImage</span><span class="tag">Linux x86_64</span><span class="tag">Attribution License</span></div>
+      <div class="repo-links">
+        <a href="https://github.com/DolbyDAX2/bannerlord-mod-manager" target="_blank" rel="noopener noreferrer" class="cta cta-secondary">GitHub</a>
+        <a href="https://gitea.fatihdurdu.xyz/dolbydax2/bannerlord-mod-manager" target="_blank" rel="noopener noreferrer" class="cta cta-secondary">Gitea</a>
+        <a href="https://github.com/DolbyDAX2/bannerlord-mod-manager/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="cta cta-primary">v1.0.0 Release</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Fatih Durdu · fatihdurdu.xyz</footer>
+  <script src="js/common.js"></script>
+</body>
+</html>
