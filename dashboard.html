@@ -712,12 +712,6 @@
 </div>
 
 <script>
-// CSRF Token koruması için hidden input
-const CSRF_TOKEN = document.createElement('input');
-CSRF_TOKEN.type = 'hidden';
-CSRF_TOKEN.name = 'csrf_token';
-CSRF_TOKEN.value = btoa(Math.random().toString(36) + Date.now()).replace(/[^a-zA-Z0-9]/g, '');
-
 const API = 'https://api.fatihdurdu.xyz';
 
 // XSS koruması için escape fonksiyonu
@@ -741,6 +735,8 @@ async function apiFetch(path, opts = {}) {
     ...opts,
     headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json', ...opts.headers }
   });
+  // Token süresi dolmuşsa (veya geçersizse) oturumu kapat
+  if (res.status === 401) { logout(true); return { error: 'Oturum sona erdi' }; }
   return res.json();
 }
 
@@ -781,7 +777,7 @@ async function checkMinecraftStatus() {
         </div>
         <span class="service-name">Minecraft Sunucusu</span>
         <div class="service-meta">
-          <span class="service-latency">${escapeHtml(data.latency || '—')}</span>
+          <span class="service-latency">${formatLatency(data.latency)}</span>
           <span class="service-arrow">—</span>
         </div>
       </div>
@@ -801,6 +797,7 @@ async function checkServiceStatuses() {
   updateRefreshIndicator('checking', 'Kontrol ediliyor...');
   try {
     const statuses = await apiFetch('/api/services/status');
+    if (!Array.isArray(statuses)) return; // 401/oturum bitti → redirect zaten başladı
     const cards = document.querySelectorAll('.service-card');
     let onlineCount = 0;
     let totalCount = statuses.length;
@@ -917,6 +914,7 @@ async function loadDashboard() {
   if (user.role === 'admin') {
     document.getElementById('adminSection').style.display = 'block';
     const users = await apiFetch('/api/admin/users');
+    if (!Array.isArray(users)) return;
     document.getElementById('usersTable').innerHTML = users.map(u => `
       <tr>
         <td>${escapeHtml(u.username)}</td>
@@ -940,6 +938,7 @@ async function loadDashboard() {
 async function loadInvites() {
   const invites = await apiFetch('/api/invites');
   const list = document.getElementById('inviteList');
+  if (!Array.isArray(invites)) return;
   if (!invites.length) {
     list.innerHTML = '<li style="font-size:0.75rem;color:var(--muted);padding:1rem 0;border-top:1px solid var(--border)">Henüz davet kodu yok.</li>';
     return;

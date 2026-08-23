@@ -164,10 +164,6 @@
 
 <script src="js/common.js"></script>
 <script>
-const CSRF_TOKEN = document.createElement('input');
-CSRF_TOKEN.type = 'hidden'; CSRF_TOKEN.name = 'csrf_token';
-CSRF_TOKEN.value = btoa(Math.random().toString(36) + Date.now()).replace(/[^a-zA-Z0-9]/g, '');
-
 function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
@@ -200,6 +196,7 @@ async function handleRegister() {
   const errEl = document.getElementById('registerError');
   errEl.textContent = '';
   if (!username || !email || !password || !invite_code) { errEl.textContent = 'Tüm alanları doldurun.'; return; }
+  if (!/^[A-Za-z0-9_]{1,16}$/.test(username)) { errEl.textContent = 'Kullanıcı adı yalnızca harf, rakam ve _ içerebilir (en fazla 16 karakter).'; return; }
   if (password.length < 10) { errEl.textContent = 'Parola en az 10 karakter olmalıdır.'; return; }
   try {
     const res = await fetch(API + '/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, email, password, invite_code }) });

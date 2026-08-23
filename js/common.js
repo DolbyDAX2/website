@@ -20,6 +20,8 @@ async function apiFetch(path, opts = {}) {
     ...opts,
     headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json', ...opts.headers }
   });
+  // Token süresi dolmuşsa (veya geçersizse) oturumu kapat
+  if (res.status === 401) { logout(true); return { error: 'Oturum sona erdi' }; }
   return res.json();
 }
 
