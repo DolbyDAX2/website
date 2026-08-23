@@ -737,7 +737,24 @@ async function apiFetch(path, opts = {}) {
   });
   // Token süresi dolmuşsa (veya geçersizse) oturumu kapat
   if (res.status === 401) { logout(true); return { error: 'Oturum sona erdi' }; }
-  return res.json();
+  try {
+    return await res.json();
+  } catch {
+    // JSON değil (örn. Cloudflare/proxy hata sayfası) — net hata fırlat
+    throw new Error('Sunucu yanıtı okunamadı (HTTP ' + res.status + ')');
+  }
+}
+
+// Geçici hataya karşı tek denemeli sarmalayıcı (SADECE GET — POST/PUT tekrar denemeye uygun değil).
+// Ağ/proxy anlık kesintilerinde sayfa yenilemeye gerek kalmadan toparlanır.
+async function apiFetchRetry(path) {
+  try {
+    return await apiFetch(path);
+  } catch (e) {
+    console.warn('İstek başarısız, 2 sn sonra tekrar denenecek:', path, e);
+    await new Promise(r => setTimeout(r, 2000));
+    return await apiFetch(path);
+  }
 }
 
 function formatDate(d) {
@@ -759,9 +776,18 @@ function updateRefreshIndicator(status, label, containerId) {
 }
 
 async function checkMinecraftStatus() {
-  // updateRefreshIndicator('checking', 'Kontrol ediliyor...', 'mc');
+  let data;
   try {
-    const data = await apiFetch('/api/minecraft/status');
+    data = await apiFetchRetry('/api/minecraft/status');
+  } catch (e) {
+    console.warn('Minecraft durumu alınamadı:', e);
+    document.getElementById('mcRefreshDot').className = 'status-dot checking';
+    document.getElementById('mcRefreshLabel').textContent = 'Güncellenemedi';
+    return;
+  }
+  if (!data || typeof data.status === 'undefined') return;
+
+  try {
     const grid = document.getElementById('minecraftGrid');
     const status = data.status === 'online' ? 'online' : 'offline';
     const label = data.status === 'online' ? 'Çevrimiçi' : 'Çevrimdışı';
@@ -795,10 +821,17 @@ async function checkMinecraftStatus() {
 
 async function checkServiceStatuses() {
   updateRefreshIndicator('checking', 'Kontrol ediliyor...');
+  let statuses;
   try {
-    const statuses = await apiFetch('/api/services/status');
-    if (!Array.isArray(statuses)) return; // 401/oturum bitti → redirect zaten başladı
-    const cards = document.querySelectorAll('.service-card');
+    statuses = await apiFetchRetry('/api/services/status');
+  } catch (e) {
+    console.warn('Servis durumu alınamadı:', e);
+    updateRefreshIndicator('checking', 'Güncellenemedi');
+    return;
+  }
+  if (!Array.isArray(statuses)) return; // 401/oturum bitti → redirect zaten başladı
+
+  try {
     let onlineCount = 0;
     let totalCount = statuses.length;
 
@@ -841,6 +874,7 @@ async function checkServiceStatuses() {
 
     updateRefreshIndicator('live', 'Canlı · ' + new Date().toLocaleTimeString('tr-TR'));
   } catch (e) {
+    console.warn('Servis durumu işlenemedi:', e);
     updateRefreshIndicator('checking', 'Güncellenemedi');
   }
 }
@@ -850,22 +884,13 @@ async function loadDashboard() {
 
   let data;
   try {
-    const res = await fetch(API + '/api/me', {
-      headers: { 'Authorization': 'Bearer ' + getToken() }
-    });
-    if (res.status === 401) { logout(true); return; }
-    if (res.status !== 200) {
-      // Sunucu geçici olarak yanıt vermiyor, dashboard'u boş göster
-      document.getElementById('pageRole').textContent = 'Oturum doğrulanıyor...';
-      return;
-    }
-    data = await res.json();
-    if (data.error) { logout(true); return; }
+    data = await apiFetchRetry('/api/me');
   } catch (e) {
-    // Network hatası - token'ı silme, sadece yükleme iptal et
+    // Network/yanıt hatası - token'ı silme, sadece yükleme iptal et
     document.getElementById('pageRole').textContent = 'Sunucuya bağlanılamıyor...';
     return;
   }
+  if (!data || !data.user) { logout(true); return; } // 401 → apiFetch zaten çıkış başlattı, yine de garanti
 
   const { user, services } = data;
 
@@ -909,23 +934,8 @@ async function loadDashboard() {
     </div>
   `;
 
-  loadInvites();
-
-  if (user.role === 'admin') {
-    document.getElementById('adminSection').style.display = 'block';
-    const users = await apiFetch('/api/admin/users');
-    if (!Array.isArray(users)) return;
-    document.getElementById('usersTable').innerHTML = users.map(u => `
-      <tr>
-        <td>${escapeHtml(u.username)}</td>
-        <td>${escapeHtml(u.email)}</td>
-        <td><span class="role-badge role-${escapeHtml(u.role)}">${escapeHtml(u.role)}</span></td>
-        <td>${escapeHtml(formatDate(u.created_at))}</td>
-      </tr>
-    `).join('');
-  }
-
-  // Servis durumlarını kontrol et
+  // Önce en kritik bölüm: servis durumları. Sonra ikincil veriler —
+  // bunlardan birinin geçici hatası durum kontrolünü bloklamamalı.
   await checkServiceStatuses();
   await checkMinecraftStatus();
   // Her 30 saniyede bir yenile
@@ -933,10 +943,36 @@ async function loadDashboard() {
     checkServiceStatuses();
     checkMinecraftStatus();
   }, 30000);
+
+  loadInvites();
+
+  if (user.role === 'admin') {
+    document.getElementById('adminSection').style.display = 'block';
+    try {
+      const users = await apiFetchRetry('/api/admin/users');
+      if (!Array.isArray(users)) return;
+      document.getElementById('usersTable').innerHTML = users.map(u => `
+      <tr>
+        <td>${escapeHtml(u.username)}</td>
+        <td>${escapeHtml(u.email)}</td>
+        <td><span class="role-badge role-${escapeHtml(u.role)}">${escapeHtml(u.role)}</span></td>
+        <td>${escapeHtml(formatDate(u.created_at))}</td>
+      </tr>
+      `).join('');
+    } catch (e) {
+      console.warn('Kullanıcı listesi alınamadı:', e);
+    }
+  }
 }
 
 async function loadInvites() {
-  const invites = await apiFetch('/api/invites');
+  let invites;
+  try {
+    invites = await apiFetchRetry('/api/invites');
+  } catch (e) {
+    console.warn('Davet kodları alınamadı:', e);
+    return;
+  }
   const list = document.getElementById('inviteList');
   if (!Array.isArray(invites)) return;
   if (!invites.length) {
@@ -955,7 +991,14 @@ async function loadInvites() {
 }
 
 async function createInvite() {
-  const data = await apiFetch('/api/invites', { method: 'POST' });
+  let data;
+  try {
+    data = await apiFetch('/api/invites', { method: 'POST' }); // POST tekrar denemeye uygun değil
+  } catch (e) {
+    console.warn('Davet kodu oluşturulamadı:', e);
+    alert('Davet kodu oluşturulamadı. Tekrar deneyin.');
+    return;
+  }
   if (data.code) loadInvites();
 }
 
