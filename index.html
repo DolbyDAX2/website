@@ -231,7 +231,7 @@ async function initNav() {
     if (data.error) { localStorage.removeItem('token'); return; }
     if (authButtons) authButtons.style.display = 'none';
     if (userDropdown) userDropdown.style.display = 'inline-block';
-    if (navUserTrigger) { navUserTrigger.textContent = data.user.username; navUserTrigger.addEventListener('click', function(e) { e.stopPropagation(); userDropdown.querySelector('.user-dropdown-content').classList.toggle('show'); }); }
+    if (navUserTrigger) navUserTrigger.textContent = data.user.username; // click listener common.js'te tek yerde bağlanır
     updateMobileNav(data.user.username);
   } catch (e) {
     if (authButtons) authButtons.style.display = 'none';

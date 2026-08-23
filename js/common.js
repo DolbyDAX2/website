@@ -47,14 +47,6 @@ async function initNav() {
     if (userDropdown) userDropdown.style.display = 'inline-block';
     if (navUserTrigger) navUserTrigger.textContent = data.user.username;
 
-    if (navUserTrigger) {
-      navUserTrigger.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const content = userDropdown.querySelector('.user-dropdown-content');
-        content.classList.toggle('show');
-      });
-    }
-
     return data;
   } catch (e) {
     if (authButtons) authButtons.style.display = 'none';
@@ -69,6 +61,15 @@ document.addEventListener('click', function(e) {
   dropdowns.forEach(function(d) {
     if (!d.closest('.user-dropdown').contains(e.target)) d.classList.remove('show');
   });
+});
+
+// Kullanıcı adı tetikleyicisi — TEK YERDE bağlanır.
+// (initNav hem common.js'te hem sayfa içi script'te çağrıldığı için listener burada tek sefer eklenir,
+//  değilse her initNav çağrısı yeni listener ekler ve çift toggle menüyü açtıkça kapatır.)
+document.getElementById('navUserTrigger')?.addEventListener('click', function(e) {
+  e.stopPropagation();
+  const content = document.querySelector('.user-dropdown-content');
+  if (content) content.classList.toggle('show');
 });
 
 // Mobile menu toggle
