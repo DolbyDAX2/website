@@ -7,10 +7,10 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <title>LlamaTray v1.5.0 - Yerel AI Model Yönetimi - Fatih Durdu</title>
-  <meta name="description" content="LlamaTray v1.5.0: llama.cpp tabanlı yerel yapay zeka modelleri için PyQt6 sistem tepsisi yöneticisi. Router modu, HuggingFace indirme, llama.cpp derleme/indirme yöneticisi ve çapraz platform tray desteği.">
+  <title>LlamaTray v1.5.1 - Yerel AI Model Yönetimi - Fatih Durdu</title>
+  <meta name="description" content="LlamaTray v1.5.1: llama.cpp tabanlı yerel yapay zeka modelleri için PyQt6 sistem tepsisi yöneticisi. Router modu, HuggingFace indirme, llama.cpp derleme/indirme yöneticisi ve çapraz platform tray desteği.">
   <link rel="canonical" href="https://fatihdurdu.xyz/llamatray.html">
-  <meta property="og:title" content="LlamaTray v1.5.0 - Fatih Durdu">
+  <meta property="og:title" content="LlamaTray v1.5.1 - Fatih Durdu">
   <meta property="og:description" content="Yerel AI (GGUF) modellerini çalıştır, yükleyin ve izle — hafif bir sistem tepsisi aracı.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://fatihdurdu.xyz/llamatray.html">
@@ -20,7 +20,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "LlamaTray",
-    "softwareVersion": "1.5.0",
+    "softwareVersion": "1.5.1",
     "operatingSystem": "Linux",
     "applicationCategory": "DeveloperApplication",
     "license": "https://opensource.org/licenses/MIT",
@@ -150,16 +150,13 @@
       </table>
 
       <div class="changelog-card">
-        <h3 class="changelog-title">⚡ Son Güncelleme: v1.5.0</h3>
-        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">v1.5.0; çapraz platform kurulum, llama.cpp derleme/indirme yönetimi, güvenilir sistem tepsisi davranışı ve daha duyarlı bir kullanıcı arayüzü sunar.</p>
+        <h3 class="changelog-title">⚡ Son Güncelleme: v1.5.1</h3>
+        <p style="font-size:0.8rem;color:#aaa;line-height:1.7;margin-bottom:1rem;">v1.5.1, Arch Linux Vulkan bağımlılık kontrolünü ve eksik paket kurulum akışını iyileştiren bir bakım sürümüdür.</p>
         <ul class="changelog-list">
-          <li><b>🛠️ llama.cpp Yöneticisi:</b> CPU, Vulkan, CUDA, ROCm-HIP ve SYCL backend’leri için donanım algılama, bağımlılık kontrolü ve öneri sistemi eklendi.</li>
-          <li><b>🔨 Option A / Option B:</b> llama.cpp kaynaktan temiz şekilde derlenebilir veya en yeni GitHub release’i hazır binary olarak indirilebilir.</li>
-          <li><b>📦 Tam Runtime Kurulumu:</b> Option B, <code>libllama-server-impl.so</code> gibi paylaşımlı kütüphanelerle birlikte kurulur; eksik shared-library hataları önlenir.</li>
-          <li><b>🏷️ Release Takibi:</b> GitHub release tag’leri Option A ve Option B için ayrı gösterilir, kaydedilir ve yönetici yeniden açıldığında geri yüklenir.</li>
-          <li><b>🗑️ Güvenli Temizlik:</b> llama.cpp kaynakları, runtime dosyaları ve binary temizlenebilir; kullanıcı ayarları ve profilleri korunur.</li>
-          <li><b>🖥️ Çapraz Platform Tepsi:</b> GNOME AppIndicator, XFCE/MATE, Wayland, minimal X11 ve sanal makine fallback davranışları iyileştirildi.</li>
-          <li><b>🎨 Duyarlı Arayüz:</b> Tepsi ikonları, responsive alt toolbar, Türkçe/İngilizce arayüz ve “Kapatırken Tepside Minimize Et” ayarının kalıcılığı geliştirildi.</li>
+          <li><b>📦 Arch Vulkan Bağımlılıkları:</b> pacman Vulkan listesine `vulkan-headers`, `vulkan-devel`, `shaderc` ve `spirv-headers` paketleri dahil edildi.</li>
+          <li><b>🔎 Gerçek Paket Kontrolü:</b> Yönetici artık pacman, dpkg veya rpm üzerinden bağımlılıkların gerçekten kurulu olup olmadığını denetliyor.</li>
+          <li><b>⚠️ Eksik Paket Durumu:</b> Eksik paketler panelde açıkça gösteriliyor ve “Eksikleri Yükle” butonu tüm paketler kurulana kadar aktif kalıyor.</li>
+          <li><b>✅ Kurulum Sonrası Doğrulama:</b> Paket kurulumu tamamlandıktan sonra bağımlılık durumu otomatik yenileniyor.</li>
         </ul>
       </div>
     </div>
@@ -177,7 +174,7 @@
         <span class="tag">Router Modu</span>
         <span class="tag">HuggingFace API</span>
         <span class="tag">llama.cpp Manager</span>
-        <span class="tag">v1.5.0 Yeni</span>
+        <span class="tag">v1.5.1 Güncel</span>
         <span class="tag">MIT Lisans</span>
       </div>
     </div>
@@ -191,11 +188,11 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.002 9.004H22v1.997h-2.998zm-16.004 0h3.003v1.997H2.998zm4.004-5.002h10.001v2.002H7.002zm-3.004 9.003h16.004v2.002H3.998zm2.004 4.003h12.001v1.997H6.002z"/></svg>
         Gitea
       </a>
-      <a href="https://github.com/DolbyDAX2/LlamaTray/releases/tag/v1.5.0" target="_blank" rel="noopener noreferrer" class="repo-btn">
-        ⬇ GitHub v1.5.0 Release
+      <a href="https://github.com/DolbyDAX2/LlamaTray/releases/tag/v1.5.1" target="_blank" rel="noopener noreferrer" class="repo-btn">
+        ⬇ GitHub v1.5.1 Release
       </a>
-      <a href="https://gitea.fatihdurdu.xyz/dolbydax2/LlamaTray/releases/tag/v1.5.0" target="_blank" rel="noopener noreferrer" class="repo-btn">
-        ⬇ Gitea v1.5.0 Release
+      <a href="https://gitea.fatihdurdu.xyz/dolbydax2/LlamaTray/releases/tag/v1.5.1" target="_blank" rel="noopener noreferrer" class="repo-btn">
+        ⬇ Gitea v1.5.1 Release
       </a>
     </div>
   </main>
